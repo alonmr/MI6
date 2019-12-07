@@ -8,14 +8,19 @@ import java.util.LinkedList;
 
 public class Inventory {
 
-    private static Inventory ourInstance = new Inventory();
+    private static Inventory ourInstance;
     private LinkedList<String> gadgets;
 
     public static Inventory getInstance() {
+        if (ourInstance == null) {
+            ourInstance = new Inventory();
+        }
         return ourInstance;
     }
 
     private Inventory() {
+        ourInstance = new Inventory();
+        gadgets = new LinkedList<>();
     }
     /**
      * @param gadget    	name of the gadget.
