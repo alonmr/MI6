@@ -1,12 +1,17 @@
 package bgu.spl.mics;
 
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
+
+import bgu.spl.mics.application.passiveObjects.Inventory;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,17 +21,21 @@ public class InventoryTest {
     @BeforeEach
     public void setUp(){
         inventory = Inventory.getInstance();
-        Gson gson = new Gson();
-        try {
-            JsonReader reader = new JsonReader(new FileReader("/MI6/Input201.json"));
-            String[] data = gson.fromJson(reader, String[].class); // contains the whole reviews list
-            for(int index = 0 ; data[index] != "services" ; index++) {
+        String inventoryArray []=new String[4];//Assuming config file is input201.json
+        JSONParser jsonParser = new JSONParser();
+        try{
+            Object obj = jsonParser.parse(new FileReader("input201.json"));
+            JSONObject jsonObject= (JSONObject) obj;
+            JSONArray inventoryJsonArray=(JSONArray)jsonObject.get("inventory");
+            inventoryArray=new String[jsonObject.size()];
+            Iterator<String> it=inventoryJsonArray.iterator();
+            int arrayIndex=0;
+            while (it.hasNext()) {
+                inventoryArray[arrayIndex]=it.next();
             }
-            //inventory.load(gadgets);
 
-        } catch (IOException e) {
-
-        }
+        } catch (IOException | ParseException e) {}
+        inventory.load(inventoryArray);
     }
 
     @Test
@@ -46,6 +55,7 @@ public class InventoryTest {
     public void test2(){
 
         inventory.printToFile("/MI6/Output.json");
+
     }
 
 }

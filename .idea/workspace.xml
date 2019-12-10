@@ -4,13 +4,13 @@
     <list default="true" id="bb64fb31-39be-4cac-a908-8ce3c1a09f4c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/target/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+<<<<<<< HEAD
+=======
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
@@ -75,6 +75,7 @@
       </file>
     </leaf>
   </component>
+>>>>>>> 7a2f21c8c5073bf85b465359111b78c0bd7fb74a
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -86,6 +87,8 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+<<<<<<< HEAD
+=======
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -105,6 +108,7 @@
       </list>
     </option>
   </component>
+>>>>>>> 7a2f21c8c5073bf85b465359111b78c0bd7fb74a
   <component name="MavenImportPreferences">
     <option name="importingSettings">
       <MavenImportingSettings>
@@ -112,6 +116,16 @@
       </MavenImportingSettings>
     </option>
   </component>
+<<<<<<< HEAD
+  <component name="ProjectId" id="1Uf8OIggfPEUMz4BPstzfzGGbRD" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+=======
   <component name="MavenProjectNavigator">
     <treeState>
       <expand>
@@ -261,23 +275,29 @@
       </pane>
       <pane id="PackagesPane" />
     </panes>
+>>>>>>> 7a2f21c8c5073bf85b465359111b78c0bd7fb74a
   </component>
   <component name="PropertiesComponent">
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1575745439653" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/json-20190722.jar!/" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
+<<<<<<< HEAD
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+=======
     <property name="project.structure.side.proportion" value="0.2" />
+>>>>>>> 7a2f21c8c5073bf85b465359111b78c0bd7fb74a
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
+  <component name="ServiceViewManager">
+    <option name="viewStates">
       <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
       </list>
     </option>
   </component>
@@ -294,6 +314,29 @@
     </task>
     <servers />
   </component>
+<<<<<<< HEAD
+  <component name="WindowStateProjectService">
+    <state x="393" y="89" key="#Notifications" timestamp="1575736734312">
+      <screen x="0" y="0" width="1603" height="862" />
+    </state>
+    <state x="393" y="89" key="#Notifications/0.0.1603.862@0.0.1603.862" timestamp="1575736734312" />
+    <state x="651" y="319" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1575736322460">
+      <screen x="0" y="0" width="1603" height="862" />
+    </state>
+    <state x="651" y="319" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1603.862@0.0.1603.862" timestamp="1575736322460" />
+    <state x="580" y="184" key="FileChooserDialogImpl" timestamp="1575736788483">
+      <screen x="0" y="0" width="1603" height="862" />
+    </state>
+    <state x="580" y="184" key="FileChooserDialogImpl/0.0.1603.862@0.0.1603.862" timestamp="1575736788483" />
+    <state x="309" y="10" key="SettingsEditor" timestamp="1575736951984">
+      <screen x="0" y="0" width="1603" height="862" />
+    </state>
+    <state x="309" y="10" key="SettingsEditor/0.0.1603.862@0.0.1603.862" timestamp="1575736951984" />
+    <state x="499" y="254" key="com.intellij.ide.util.TipDialog" timestamp="1575736264555">
+      <screen x="0" y="0" width="1603" height="862" />
+    </state>
+    <state x="499" y="254" key="com.intellij.ide.util.TipDialog/0.0.1603.862@0.0.1603.862" timestamp="1575736264555" />
+=======
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
@@ -635,5 +678,6 @@
         </settings>
       </state>
     </states>
+>>>>>>> 7a2f21c8c5073bf85b465359111b78c0bd7fb74a
   </component>
 </project>

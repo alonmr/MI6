@@ -1,4 +1,5 @@
 package bgu.spl.mics.application.passiveObjects;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,10 +24,10 @@ public class Squad {
 	/**
 	 * Initializes the squad. This method adds all the agents to the squad.
 	 * <p>
-	 * @param inventory 	Data structure containing all data necessary for initialization
-	 * 						of the squad.
-	 */
-	public void load (Agent[] inventory) {
+     * @param inventory    Data structure containing all data necessary for initialization
+     * 						of the squad.
+     */
+	public void load (HashMap<String, Agent> inventory) {
 		// TODO Implement this
 	}
 
