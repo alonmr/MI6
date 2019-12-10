@@ -1,6 +1,7 @@
 package bgu.spl.mics;
 
 
+import bgu.spl.mics.application.passiveObjects.Inventory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
