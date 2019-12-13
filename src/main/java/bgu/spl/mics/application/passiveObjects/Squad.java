@@ -1,7 +1,5 @@
 package bgu.spl.mics.application.passiveObjects;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Passive data-object representing a information about an agent in MI6.
@@ -12,13 +10,15 @@ import java.util.Map;
 public class Squad {
 
 	private Map<String, Agent> agents;
-
+	private static Squad ourInstance;
 	/**
 	 * Retrieves the single instance of this class.
 	 */
 	public static Squad getInstance() {
-		//TODO: Implement this
-		return null;
+		if (ourInstance == null) {
+			ourInstance = new Squad();
+		}
+		return ourInstance;
 	}
 
 	/**
@@ -28,14 +28,21 @@ public class Squad {
      * 						of the squad.
      */
 	public void load (HashMap<String, Agent> inventory) {
-		// TODO Implement this
+		if (agents == null)
+			agents = new HashMap<String, Agent>();
+		agents.putAll(inventory); //Copies inventory elements to agents HashMap.
 	}
 
 	/**
 	 * Releases agents.
 	 */
 	public void releaseAgents(List<String> serials){
-		// TODO Implement this
+		ListIterator<String> serialIterator = serials.listIterator();
+		while(serialIterator.hasNext()){
+			if(agents.containsKey(serialIterator.next())){
+				agents.get(serialIterator).release();//TODO: check if it works because get.
+			}
+		}
 	}
 
 	/**
@@ -51,10 +58,16 @@ public class Squad {
 	 * @param serials   the serial numbers of the agents
 	 * @return ‘false’ if an agent of serialNumber ‘serial’ is missing, and ‘true’ otherwise
 	 */
-	public boolean getAgents(List<String> serials){
-		// TODO Implement this
-		return false;
-	}
+	public boolean getAgents(List<String> serials) {
+		ListIterator<String> serialIterator = serials.listIterator();
+		while (serialIterator.hasNext()) {
+			if (!agents.containsKey(serialIterator.next())) {
+				return false;
+			}
+		}
+		return true; //TODO:Method should acquire agents before
+	}// If an agent is in the Squad, but is already acquired for some
+	// other mission, the function will wait until the agent becomes available
 
     /**
      * gets the agents names
@@ -62,8 +75,14 @@ public class Squad {
      * @return a list of the names of the agents with the specified serials.
      */
     public List<String> getAgentsNames(List<String> serials){
-        // TODO Implement this
-	    return null;
+		List<String> namesList=new LinkedList<>();
+		ListIterator<String> serialIterator = serials.listIterator();
+		while (serialIterator.hasNext()) {
+			if (agents.containsKey(serialIterator.next())) {
+				namesList.add(agents.get(serialIterator).getName());
+			}
+		}
+		return namesList;
     }
 
 }

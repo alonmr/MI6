@@ -42,7 +42,8 @@ public class SquadTest {
         squad.load(agents);
     }
         @Test
-    public void test(){
+    public void test(){ //getAgents test
+
         List<String> list1=new LinkedList<>();
         list1.add("008");
         assertFalse(squad.getAgents(list1));
@@ -57,7 +58,7 @@ public class SquadTest {
 
     }
         @Test
-    public void test2(){
+    public void test2(){//getAgentsName test
         List<String> list1=new LinkedList<>();
         list1.add("007");
         List<String> list=squad.getAgentsNames(list1);
