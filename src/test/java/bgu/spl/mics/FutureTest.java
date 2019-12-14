@@ -26,27 +26,28 @@ public class FutureTest {
         t.start();
         future.resolve("Done");
         assertTrue(future.isDone());
-        assertEquals(result,"Done");
+        assertEquals("Done",result);
     }
 
     @Test
     public void test2(){//if test2 passed and test didn't check wait and sync
         future.resolve("Done");
-        String result = future.get();
+        result = future.get();
         assertTrue(future.isDone());
-        assertEquals(result,"Done");
+        assertEquals("Done",result);
     }
     @Test //this test depends on threads management
     public void test3(){
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                result =future.get(1000, TimeUnit.NANOSECONDS);
+                result =future.get(1, TimeUnit.NANOSECONDS);
             }
         });
         t.start();
         future.resolve("Done");
-        if(result != null)
-            System.out.println(result);
+        try{t.join();}catch(Exception ignored){}
+        assertEquals("Done",result);
+
     }
 }
