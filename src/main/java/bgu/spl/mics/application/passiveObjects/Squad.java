@@ -29,7 +29,7 @@ public class Squad {
      */
 	public void load (HashMap<String, Agent> inventory) {
 		if (agents == null)
-			agents = new HashMap<String, Agent>();
+			agents = new HashMap<>();
 		agents.putAll(inventory); //Copies inventory elements to agents HashMap.
 	}
 
@@ -78,8 +78,9 @@ public class Squad {
 		List<String> namesList=new LinkedList<>();
 		ListIterator<String> serialIterator = serials.listIterator();
 		while (serialIterator.hasNext()) {
-			if (agents.containsKey(serialIterator.next())) {
-				namesList.add(agents.get(serialIterator).getName());
+			String serialNum = serialIterator.next();
+			if (agents.containsKey(serialNum)) {
+				namesList.add(agents.get(serialNum).getName());
 			}
 		}
 		return namesList;
