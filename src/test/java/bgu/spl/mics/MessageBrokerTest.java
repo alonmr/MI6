@@ -11,8 +11,6 @@ public class MessageBrokerTest {
     @BeforeEach
     public void setUp(){
         massageBrokerTest = MessageBrokerImpl.getInstance();
-
-        massageBrokerTest.subscribeEvent(MissionReceivedEvent(mission));
     }
 
     @Test
@@ -33,6 +31,21 @@ public class MessageBrokerTest {
             thrown=true;
         }
         assertTrue(thrown);
+        thrown=false;
+        massageBrokerTest.unregister(M1);
+        try{
+            massageBrokerTest.awaitMessage(M1);
+        } catch (InterruptedException e) {
+            thrown=true;
+        }
+        assertTrue(thrown);
+    }
+
+    @Test
+    public void test1(){
+        M M1 = new M();
+        M M2 = new M();
+        massageBrokerTest.register(M1);
 
     }
 }
