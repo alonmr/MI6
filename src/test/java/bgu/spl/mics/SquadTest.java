@@ -65,6 +65,13 @@ public class SquadTest {
         assertTrue(list.contains( "James Bond"));
         assertFalse(list.contains("Wannabe Agent"));
     }
+    @Test
+    public void  test3(){
+        List<String> list1=new LinkedList<>();
+        list1.add("007");
+        squad.sendAgents(list1,1000000000);
+        assertTrue(squad.getAgents(list1));
+    }
 
 
     private void parseSquadObject(JSONObject squad,HashMap<String,Agent> agents) {

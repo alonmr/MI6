@@ -1,6 +1,8 @@
 package bgu.spl.mics.application.passiveObjects;
 import java.util.*;
 
+import static java.lang.Thread.sleep;
+
 /**
  * Passive data-object representing a information about an agent in MI6.
  * You must not alter any of the given public methods of this class. 
@@ -39,10 +41,9 @@ public class Squad {
 	public void releaseAgents(List<String> serials){
 		ListIterator<String> serialIterator = serials.listIterator();
 		while(serialIterator.hasNext()){
-			if(agents.containsKey(serialIterator.next())){
-				agents.get(serialIterator).release();//TODO: check if it works because get.
-			}
+			agents.get(serialIterator.next()).release();//TODO: check if it works because get.
 		}
+
 	}
 
 	/**
@@ -50,7 +51,17 @@ public class Squad {
 	 * @param time   milliseconds to sleep
 	 */
 	public void sendAgents(List<String> serials, int time){
-		// TODO Implement this
+		synchronized (this) {
+			ListIterator<String> serialIterator1 = serials.listIterator();
+			while (serialIterator1.hasNext()) {
+				agents.get(serialIterator1.next()).acquire();
+			}
+			try {
+				sleep(time);
+			} catch (Exception ignored) {
+			}
+			releaseAgents(serials);
+		}
 	}
 
 	/**
@@ -61,11 +72,17 @@ public class Squad {
 	public boolean getAgents(List<String> serials) {
 		ListIterator<String> serialIterator = serials.listIterator();
 		while (serialIterator.hasNext()) {
-			if (!agents.containsKey(serialIterator.next())) {
-				return false;
+			String serialNum = serialIterator.next();
+			if (agents.containsKey(serialNum)) {
+				Agent agent = agents.get(serialNum);
+				while(!agent.isAvailable()){
+					try{wait();}
+					catch (Exception ignored){};
+				}
+				return true;
 			}
 		}
-		return true; //TODO:Method should acquire agents before
+		return false;//TODO:Method should acquire agents before
 	}// If an agent is in the Squad, but is already acquired for some
 	// other mission, the function will wait until the agent becomes available
 

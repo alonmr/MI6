@@ -1,5 +1,14 @@
 package bgu.spl.mics;
 
+import bgu.spl.mics.application.messages.AgentsAvailableEvent;
+import bgu.spl.mics.application.messages.GadgetAvailableEvent;
+import bgu.spl.mics.application.messages.MissionReceivedEvent;
+import bgu.spl.mics.application.messages.TickBroadcast;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
@@ -10,28 +19,40 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class MessageBrokerImpl implements MessageBroker {
 
 	private static MessageBrokerImpl ourInstance;
-	private ArrayBlockingQueue<Message> MQueue;
-	private ArrayBlockingQueue<Message> QQueue;
-	private ArrayBlockingQueue<Message> MoneyPennyQueue;
+	private static HashMap<Subscriber, Queue<Message>> registers;//maybe should be blocking queue
+	private static List<Subscriber> agentsAvailableList;//Subscribers subscribe to this list to get this events
+	private static List<Subscriber> gadgetAvailableList;
+	private static List<Subscriber> missionAvailableList;
+	private static List<Subscriber> tickBroadcastList;
 	/**
 	 * Retrieves the single instance of this class.
 	 */
 	public static MessageBroker getInstance() {
 		if (ourInstance == null) {
 			ourInstance = new MessageBrokerImpl();
+			registers = new HashMap<>();
+			agentsAvailableList = new LinkedList<>();
+			gadgetAvailableList = new LinkedList<>();
+			missionAvailableList = new LinkedList<>();
+			tickBroadcastList = new LinkedList<>();
 		}
 		return ourInstance;
 	}
 
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {
-		// TODO Auto-generated method stub
-
+		if(type.isAssignableFrom(AgentsAvailableEvent.class))
+			agentsAvailableList.add(m);
+			if(type.isAssignableFrom(GadgetAvailableEvent.class))
+			gadgetAvailableList.add(m);
+		if(type.isAssignableFrom(MissionReceivedEvent.class))
+			missionAvailableList.add(m);
 	}
 
 	@Override
 	public void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
-		// TODO Auto-generated method stub
+		if(type.isAssignableFrom(TickBroadcast.class))
+			tickBroadcastList.add(m);
 
 	}
 
@@ -56,13 +77,7 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public void register(Subscriber m) {
-		String name = m.getName();
-		if (name.equals("M"))
-			MQueue = new ArrayBlockingQueue<Message>(0);//TODO: change cap and message type
-		else if(name.equals("Q"))
-			QQueue = new ArrayBlockingQueue<Message>(0);
-		else if (name.equals("MoneyPenny"))
-			MoneyPennyQueue = new ArrayBlockingQueue<Message>(0);
+		registers.put(m,new ArrayBlockingQueue<Message>(1));
 	}
 
 	@Override

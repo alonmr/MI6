@@ -12,7 +12,6 @@ public class MessageBrokerTest {
     public void setUp(){
         massageBrokerTest = MessageBrokerImpl.getInstance();
 
-        massageBrokerTest.subscribeEvent(MissionReceivedEvent(mission));
     }
 
     @Test
