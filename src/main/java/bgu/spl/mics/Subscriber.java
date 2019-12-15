@@ -104,9 +104,10 @@ public abstract class Subscriber extends RunnableSubPub {
     @Override
     public final void run() {
         initialize();
-        while (!terminated) {
-            System.out.println("NOT IMPLEMENTED!!!"); //TODO: you should delete this line :)
-        }
+    }
+
+    public void forTest() throws InterruptedException {
+        MessageBrokerImpl.getInstance().awaitMessage(this);
     }
 
 }

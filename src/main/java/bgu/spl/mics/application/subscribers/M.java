@@ -1,6 +1,9 @@
 package bgu.spl.mics.application.subscribers;
 
+import bgu.spl.mics.MessageBroker;
+import bgu.spl.mics.MessageBrokerImpl;
 import bgu.spl.mics.Subscriber;
+import bgu.spl.mics.application.messages.MissionReceivedEvent;
 
 /**
  * M handles ReadyEvent - fills a report and sends agents to mission.
@@ -17,8 +20,9 @@ public class M extends Subscriber {
 
 	@Override
 	protected void initialize() {
-		// TODO Implement this
-		
+		MessageBroker messageBrokerTest = MessageBrokerImpl.getInstance();
+		messageBrokerTest.register(this);
+		messageBrokerTest.subscribeEvent(MissionReceivedEvent.class,this);
 	}
 
 }
