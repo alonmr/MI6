@@ -66,8 +66,8 @@ public class Inventory {
 	public void printToFile(String filename){
 		try (FileWriter file = new FileWriter(filename)) {
 			for (String gadget:gadgets) {
-				file.write(gadget);
-				//file.flush();
+				file.write(gadget+"\n");
+				file.flush();
 			}
 		} catch (IOException e) {
 

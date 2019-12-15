@@ -27,11 +27,12 @@ public class InventoryTest {
             Object obj = jsonParser.parse(new FileReader("input201.json"));
             JSONObject jsonObject= (JSONObject) obj;
             JSONArray inventoryJsonArray=(JSONArray)jsonObject.get("inventory");
-            inventoryArray=new String[jsonObject.size()];
+            inventoryArray=new String[inventoryJsonArray.size()];
             Iterator<String> it=inventoryJsonArray.iterator();
             int arrayIndex=0;
             while (it.hasNext()) {
                 inventoryArray[arrayIndex]=it.next();
+                arrayIndex++;
             }
 
         } catch (IOException | ParseException e) {}
@@ -53,8 +54,7 @@ public class InventoryTest {
 
     @Test
     public void test2(){
-
-        inventory.printToFile("/MI6/Output.json");
+        inventory.printToFile("Output.json");
 
     }
 
