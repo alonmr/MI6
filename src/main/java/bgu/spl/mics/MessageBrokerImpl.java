@@ -4,6 +4,8 @@ import bgu.spl.mics.application.messages.AgentsAvailableEvent;
 import bgu.spl.mics.application.messages.GadgetAvailableEvent;
 import bgu.spl.mics.application.messages.MissionReceivedEvent;
 import bgu.spl.mics.application.messages.TickBroadcast;
+import bgu.spl.mics.application.subscribers.M;
+import bgu.spl.mics.application.subscribers.Moneypenny;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -24,6 +26,10 @@ public class MessageBrokerImpl implements MessageBroker {
 	private static List<Subscriber> gadgetAvailableList;
 	private static List<Subscriber> missionAvailableList;
 	private static List<Subscriber> tickBroadcastList;
+	private static List<M> MsRoundRobin;
+	private static List<Moneypenny> MoneysRoundRobin;
+	private static HashMap<Event,Future> events;
+
 	/**
 	 * Retrieves the single instance of this class.
 	 */
@@ -35,6 +41,7 @@ public class MessageBrokerImpl implements MessageBroker {
 			gadgetAvailableList = new LinkedList<>();
 			missionAvailableList = new LinkedList<>();
 			tickBroadcastList = new LinkedList<>();
+			events = new HashMap<>();
 		}
 		return ourInstance;
 	}
@@ -58,26 +65,34 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public <T> void complete(Event<T> e, T result) {
-		// TODO Auto-generated method stub
+		events.get(e).resolve(result);
 
 	}
 
 	@Override
 	public void sendBroadcast(Broadcast b) {
-		// TODO Auto-generated method stub
-
+		if(b.getClass().isAssignableFrom(TickBroadcast.class)) {
+			for (Subscriber s : tickBroadcastList) {
+				registers.get(s).add(b);
+			}
+		}
 	}
 
 	
 	@Override
-	public <T> Future<T> sendEvent(Event<T> e) {
-		// TODO Auto-generated method stub
+	public <T> Future<T> sendEvent(Event<T> e) {//TODO: imp for other events
+		if(e.getClass().isAssignableFrom(MissionReceivedEvent.class)){
+			registers.get(missionAvailableList.get(0)).add(e);
+			Future<T> future = new Future<>();
+			events.put(e,future);
+			return future;
+		}
 		return null;
 	}
 
 	@Override
 	public void register(Subscriber m) {
-		registers.put(m,new ArrayBlockingQueue<Message>(1));
+		registers.put(m,new LinkedList<>());
 	}
 
 	@Override
@@ -88,8 +103,14 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public Message awaitMessage(Subscriber m) throws InterruptedException {
-		// TODO Auto-generated method stub
-		return null;
+		synchronized (registers) {
+			while (registers.get(m).isEmpty()) {
+				if(Thread.currentThread().isInterrupted())
+					throw new InterruptedException();
+				wait();
+			}
+			return registers.get(m).element();
+		}
 	}
 
 	
