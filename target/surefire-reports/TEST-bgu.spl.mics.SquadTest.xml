@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="bgu.spl.mics.SquadTest" time="0" tests="2" errors="1" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="bgu.spl.mics.SquadTest" time="0" tests="2" errors="0" skipped="0" failures="0">
   <properties>
     <property name="sun.desktop" value="windows"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
@@ -19,7 +19,7 @@
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_191\jre\bin"/>
-    <property name="sun.java.command" value="C:\Users\alonm\AppData\Local\Temp\surefire4047777995174590824\surefirebooter4710562659088363497.jar C:\Users\alonm\AppData\Local\Temp\surefire4047777995174590824 2019-12-15T11-59-37_325-jvmRun1 surefire5008655406701815330tmp surefire_07664150704305144221tmp"/>
+    <property name="sun.java.command" value="C:\Users\alonm\AppData\Local\Temp\surefire29908828991904781\surefirebooter7199708239036935582.jar C:\Users\alonm\AppData\Local\Temp\surefire29908828991904781 2019-12-15T13-45-11_801-jvmRun1 surefire1033286833950845919tmp surefire_01318005918476313519tmp"/>
     <property name="surefire.test.class.path" value="C:\Users\alonm\Desktop\MI6\target\test-classes;C:\Users\alonm\Desktop\MI6\target\classes;C:\Users\alonm\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.6.0-M1\junit-jupiter-engine-5.6.0-M1.jar;C:\Users\alonm\.m2\repository\org\apiguardian\apiguardian-api\1.1.0\apiguardian-api-1.1.0.jar;C:\Users\alonm\.m2\repository\org\junit\platform\junit-platform-engine\1.6.0-M1\junit-platform-engine-1.6.0-M1.jar;C:\Users\alonm\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\alonm\.m2\repository\org\junit\platform\junit-platform-commons\1.6.0-M1\junit-platform-commons-1.6.0-M1.jar;C:\Users\alonm\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.6.0-M1\junit-jupiter-api-5.6.0-M1.jar;C:\Users\alonm\.m2\repository\com\googlecode\json-simple\json-simple\1.1\json-simple-1.1.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\alonm"/>
@@ -32,7 +32,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="C:\Users\alonm\AppData\Local\Temp\surefire4047777995174590824\surefirebooter4710562659088363497.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\alonm\AppData\Local\Temp\surefire29908828991904781\surefirebooter7199708239036935582.jar"/>
     <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.8.0_191\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_191\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_191\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.8.0_191\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_191\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_191\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_191\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_191\jre\classes"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
@@ -63,9 +63,5 @@
     <property name="java.class.version" value="52.0"/>
   </properties>
   <testcase name="test" classname="bgu.spl.mics.SquadTest" time="0"/>
-  <testcase name="test2" classname="bgu.spl.mics.SquadTest" time="0">
-    <error type="java.lang.NullPointerException">java.lang.NullPointerException
-	at bgu.spl.mics.SquadTest.test2(SquadTest.java:64)
-</error>
-  </testcase>
+  <testcase name="test2" classname="bgu.spl.mics.SquadTest" time="0"/>
 </testsuite>

@@ -1,8 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: bgu.spl.mics.SquadTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0 s <<< FAILURE! - in bgu.spl.mics.SquadTest
-test2  Time elapsed: 0 s  <<< ERROR!
-java.lang.NullPointerException
-	at bgu.spl.mics.SquadTest.test2(SquadTest.java:64)
-
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in bgu.spl.mics.SquadTest
