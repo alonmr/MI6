@@ -71,7 +71,8 @@ public class Squad {
 	 */
 	public boolean getAgents(List<String> serials) {
 		ListIterator<String> serialIterator = serials.listIterator();
-		while (serialIterator.hasNext()) {
+		boolean isAgentInSquad=true;
+		while (serialIterator.hasNext() && isAgentInSquad) {
 			String serialNum = serialIterator.next();
 			if (agents.containsKey(serialNum)) {
 				Agent agent = agents.get(serialNum);
@@ -79,10 +80,11 @@ public class Squad {
 					try{wait();}
 					catch (Exception ignored){};
 				}
-				return true;
 			}
+			else
+				isAgentInSquad=false;
 		}
-		return false;//TODO:Method should acquire agents before
+		return isAgentInSquad;//TODO:Method should acquire agents before
 	}// If an agent is in the Squad, but is already acquired for some
 	// other mission, the function will wait until the agent becomes available
 

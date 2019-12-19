@@ -50,7 +50,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {
 		if(type.isAssignableFrom(AgentsAvailableEvent.class))
 			agentsAvailableList.add(m);
-			if(type.isAssignableFrom(GadgetAvailableEvent.class))
+		if(type.isAssignableFrom(GadgetAvailableEvent.class))
 			gadgetAvailableList.add(m);
 		if(type.isAssignableFrom(MissionReceivedEvent.class))
 			missionAvailableList.add(m);
@@ -97,6 +97,7 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public void unregister(Subscriber m) {
+		registers.remove(m);
 		// TODO Auto-generated method stub
 
 	}

@@ -11,12 +11,21 @@ import java.util.List;
  * You can add ONLY private fields and methods to this class as you see fit.
  */
 public class Diary {
+	private List<Report> reports;
+	private static Diary ourInstance;
+	private int total;
 	/**
 	 * Retrieves the single instance of this class.
 	 */
 	public static Diary getInstance() {
-		//TODO: Implement this
-		return null;
+		if (ourInstance == null) {
+			ourInstance = new Diary();
+		}
+		return ourInstance;
+	}
+
+	public void incrementTotal(){
+		ourInstance.total=ourInstance.getTotal()+1;
 	}
 
 	public List<Report> getReports() {
@@ -28,7 +37,8 @@ public class Diary {
 	 * @param reportToAdd - the report to add
 	 */
 	public void addReport(Report reportToAdd){
-		//TODO: Implement this
+		reports.add(reportToAdd);
+		ourInstance.incrementTotal();
 	}
 
 	/**
@@ -47,7 +57,6 @@ public class Diary {
 	 * @return the total number of received missions (executed / aborted) be all the M-instances.
 	 */
 	public int getTotal(){
-		//TODO: Implement this
-		return 0;
+		return total;
 	}
 }
