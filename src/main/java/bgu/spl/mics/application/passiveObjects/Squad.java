@@ -52,6 +52,7 @@ public class Squad {
 	 */
 	public void sendAgents(List<String> serials, int time){
 		synchronized (this) {
+
 			ListIterator<String> serialIterator1 = serials.listIterator();
 			while (serialIterator1.hasNext()) {
 				agents.get(serialIterator1.next()).acquire();
@@ -70,23 +71,31 @@ public class Squad {
 	 * @return ‘false’ if an agent of serialNumber ‘serial’ is missing, and ‘true’ otherwise
 	 */
 	public boolean getAgents(List<String> serials) {
-		ListIterator<String> serialIterator = serials.listIterator();
-		boolean isAgentInSquad=true;
-		while (serialIterator.hasNext() && isAgentInSquad) {
-			String serialNum = serialIterator.next();
-			if (agents.containsKey(serialNum)) {
-				Agent agent = agents.get(serialNum);
-				while(!agent.isAvailable()){
-					try{wait();}
-					catch (Exception ignored){};
-				}
+		synchronized (agents) {
+			ListIterator<String> serialIterator = serials.listIterator();
+			while (serialIterator.hasNext()) {
+				String serialNum = serialIterator.next();
+				if (agents.containsKey(serialNum)) {
+				} else
+					return false;
 			}
-			else
-				isAgentInSquad=false;
+			acquireAgents(serials);
 		}
-		return isAgentInSquad;//TODO:Method should acquire agents before
-	}// If an agent is in the Squad, but is already acquired for some
-	// other mission, the function will wait until the agent becomes available
+		return true;//TODO:Method should acquire agents before
+	}
+
+	private void acquireAgents(List<String> serials) {
+		ListIterator<String> serialIterator = serials.listIterator(); //TODO:Ask Eizenberg about sync a function in a function
+		while (serialIterator.hasNext()) {
+			String serialNum = serialIterator.next();
+			Agent agent = agents.get(serialNum);
+			while(!agent.isAvailable()){
+				try{wait();}
+				catch (Exception ignored){};
+			}
+			agent.acquire();
+		}
+	}
 
     /**
      * gets the agents names

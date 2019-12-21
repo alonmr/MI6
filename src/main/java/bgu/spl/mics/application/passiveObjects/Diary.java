@@ -1,6 +1,8 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Passive object representing the diary where all reports are stored.
@@ -13,7 +15,7 @@ import java.util.List;
 public class Diary {
 	private List<Report> reports;
 	private static Diary ourInstance;
-	private int total;
+	private AtomicInteger total;
 	/**
 	 * Retrieves the single instance of this class.
 	 */
@@ -23,9 +25,13 @@ public class Diary {
 		}
 		return ourInstance;
 	}
+	private Diary(){
+		total=new AtomicInteger(0);
+		reports=new LinkedList<Report>();
+	}
 
 	public void incrementTotal(){
-		ourInstance.total=ourInstance.getTotal()+1;
+		ourInstance.total.incrementAndGet();
 	}
 
 	public List<Report> getReports() {
@@ -56,7 +62,7 @@ public class Diary {
 	 * Gets the total number of received missions (executed / aborted) be all the M-instances.
 	 * @return the total number of received missions (executed / aborted) be all the M-instances.
 	 */
-	public int getTotal(){
+	public AtomicInteger getTotal(){
 		return total;
 	}
 }

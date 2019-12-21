@@ -21,15 +21,15 @@ public class Report {
 
 	public Report(String missionName,int M,int MoneyPenny,List<String> agentsSerialNumbers, List<String> agentsNames,
 				  String gadgetName,int timeIssued,int QTime,int timeCreated){
-		missionName=missionName;
-		M=M;
-		MoneyPenny=MoneyPenny;
-		agentsSerialNumbers=agentsSerialNumbers;
-		agentsNames=agentsNames;
-		gadgetName=gadgetName;
-		timeIssued=timeIssued;
-		QTime=QTime;
-		timeCreated=timeCreated;
+		this.missionName=missionName;
+		this.M=M;
+		this.MoneyPenny=MoneyPenny;
+		this.agentsSerialNumbers=agentsSerialNumbers;
+		this.agentsNames=agentsNames;
+		this.gadgetName=gadgetName;
+		this.timeIssued=timeIssued;
+		this.QTime=QTime;
+		this.timeCreated=timeCreated;
 	}
 
 

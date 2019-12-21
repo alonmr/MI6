@@ -1,9 +1,9 @@
 package bgu.spl.mics.application.subscribers;
 
-import bgu.spl.mics.MessageBroker;
-import bgu.spl.mics.MessageBrokerImpl;
-import bgu.spl.mics.Subscriber;
+import bgu.spl.mics.*;
+import bgu.spl.mics.application.messages.AgentsAvailableEvent;
 import bgu.spl.mics.application.messages.MissionReceivedEvent;
+import bgu.spl.mics.application.passiveObjects.Diary;
 
 /**
  * M handles ReadyEvent - fills a report and sends agents to mission.
@@ -12,10 +12,12 @@ import bgu.spl.mics.application.messages.MissionReceivedEvent;
  * You MAY change constructor signatures and even add new public constructors.
  */
 public class M extends Subscriber {
-
-	public M() {
-		super("Change_This_Name");
-		// TODO Implement this
+	private SimplePublisher m;
+	private int id;
+	private Callback<MissionReceivedEvent> callbackName;
+	public M(int id) {
+		super("M");
+		this.id=id;
 	}
 
 	@Override
@@ -23,6 +25,18 @@ public class M extends Subscriber {
 		MessageBroker messageBrokerTest = MessageBrokerImpl.getInstance();
 		messageBrokerTest.register(this);
 		messageBrokerTest.subscribeEvent(MissionReceivedEvent.class,this);
+
+		// anonymous class, the method ‘call’ is overriden
+		callbackName = new Callback<MissionReceivedEvent>(){
+			@Override
+			public void call(MissionReceivedEvent e) {
+				Diary.getInstance().incrementTotal();
+
+			}
+		};
+
+		this.subscribeEvent(MissionReceivedEvent.class, callbackName);
+
 	}
 
 }

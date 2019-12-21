@@ -30,7 +30,6 @@ public class MI6Runner {
                 inventoryArray[arrayIndex]=it.next();
                 arrayIndex++;
             }
-
         } catch (IOException | ParseException e) {}
         inventory.load(inventoryArray);
         // TODO Implement this

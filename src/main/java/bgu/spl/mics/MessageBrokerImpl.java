@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * The {@link MessageBrokerImpl class is the implementation of the MessageBroker interface.
@@ -21,7 +23,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class MessageBrokerImpl implements MessageBroker {
 
 	private static MessageBrokerImpl ourInstance;
-	private static HashMap<Subscriber, Queue<Message>> registers;//maybe should be blocking queue
+	private static HashMap<Subscriber, LinkedBlockingQueue<Message>> registers;//maybe should be blocking queue
 	private static List<Subscriber> agentsAvailableList;//Subscribers subscribe to this list to get this events
 	private static List<Subscriber> gadgetAvailableList;
 	private static List<Subscriber> missionAvailableList;
@@ -92,14 +94,18 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public void register(Subscriber m) {
-		registers.put(m,new LinkedList<>());
+		registers.put(m,new LinkedBlockingQueue<Message>());
 	}
 
 	@Override
 	public void unregister(Subscriber m) {
 		registers.remove(m);
-		// TODO Auto-generated method stub
-
+		agentsAvailableList.remove(m);
+		gadgetAvailableList.remove(m);
+		missionAvailableList.remove(m);
+		tickBroadcastList.remove(m);
+		MsRoundRobin.remove(m);
+		MoneysRoundRobin.remove(m);
 	}
 
 	@Override
