@@ -2,14 +2,16 @@ package bgu.spl.mics.application.messages;
 import bgu.spl.mics.Event;
 
 import java.util.LinkedList;
-public class SendAgentsEvent implements Event {
-    private LinkedList<String> agentsToSend;
+import java.util.List;
 
-    public SendAgentsEvent(LinkedList<String> agentsToSend) {
+public class SendAgentsEvent implements Event<Boolean> {
+    private List<String> agentsToSend;
+
+    public SendAgentsEvent(List<String> agentsToSend) {
         this.agentsToSend = agentsToSend;
     }
 
-    public LinkedList<String> getAgentsToRelease() {
+    public List<String> getAgentsToRelease() {
         return agentsToSend;
     }
 

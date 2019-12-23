@@ -6,13 +6,17 @@ import bgu.spl.mics.application.passiveObjects.MissionInfo;
 
 import java.util.List;
 
-public class MissionReceivedEvent<T> implements Event<T> {
+public class MissionReceivedEvent implements Event<Boolean> {
 
     private MissionInfo missionInfo;
 
 
     public MissionReceivedEvent(MissionInfo missionInfo) {
         this.missionInfo = missionInfo;
+    }
+
+    public MissionReceivedEvent() {
+
     }
 
     public String getGadget(){return missionInfo.getGadget();}

@@ -7,6 +7,7 @@ import bgu.spl.mics.Subscriber;
 import bgu.spl.mics.application.messages.AgentsAvailableEvent;
 import bgu.spl.mics.application.messages.ReleaseAgentsEvent;
 import bgu.spl.mics.application.messages.SendAgentsEvent;
+import bgu.spl.mics.application.messages.TickBroadcast;
 
 /**
  * Only this type of Subscriber can access the squad.
@@ -18,10 +19,8 @@ import bgu.spl.mics.application.messages.SendAgentsEvent;
 public class Moneypenny extends Subscriber {
 
 	private int id;
-	private Callback<AgentsAvailableEvent> callbackAgentsAvailable;
-	private Callback<SendAgentsEvent> callbackSendAgents;
-	private Callback<ReleaseAgentsEvent> callbackReleaseAgents;
 
+	private int currTick;
 	public Moneypenny(int id) {
 		super("Moneypenny");
 		this.id = id;
@@ -33,22 +32,28 @@ public class Moneypenny extends Subscriber {
 		messageBrokerTest.register(this);
 		messageBrokerTest.subscribeEvent(AgentsAvailableEvent.class,this);
 
-		// anonymous class, the method ‘call’ is overriden
-		callbackAgentsAvailable = new Callback<AgentsAvailableEvent>(){
+		Callback<TickBroadcast> callbackTimeTickBroadcast = new Callback<TickBroadcast>() {
+			@Override
+			public void call(TickBroadcast c) {
+				currTick = c.getCurrTick();
+			}
+		};
+
+		Callback<AgentsAvailableEvent> callbackAgentsAvailable = new Callback<AgentsAvailableEvent>() {
 			@Override
 			public void call(AgentsAvailableEvent e) {
 
 			}
 		};
 
-		callbackSendAgents = new Callback<SendAgentsEvent>(){
+		Callback<SendAgentsEvent> callbackSendAgents = new Callback<SendAgentsEvent>() {
 			@Override
 			public void call(SendAgentsEvent e) {
 
 			}
 		};
 
-		callbackReleaseAgents = new Callback<ReleaseAgentsEvent>(){
+		Callback<ReleaseAgentsEvent> callbackReleaseAgents = new Callback<ReleaseAgentsEvent>() {
 			@Override
 			public void call(ReleaseAgentsEvent e) {
 

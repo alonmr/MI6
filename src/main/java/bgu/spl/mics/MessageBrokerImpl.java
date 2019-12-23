@@ -25,7 +25,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	private static LinkedBlockingQueue<Subscriber> gadgetAvailableList;
 	private static LinkedBlockingQueue<Subscriber> sendAgentsList;
 	private static LinkedBlockingQueue<Subscriber> releaseAgentsList;
-	private static LinkedBlockingQueue<Subscriber> missionAvailableList;//round robin is by event type not by subscriber
+	private static LinkedBlockingQueue<Subscriber> missionAvailableList;
 	private static List<Subscriber> tickBroadcastList;
 	private static HashMap<Event,Future> events;
 
@@ -85,7 +85,6 @@ public class MessageBrokerImpl implements MessageBroker {
 		if(e.getClass().isAssignableFrom(MissionReceivedEvent.class)){
 			Subscriber s = missionAvailableList.poll();
 			registers.get(s).add(e);
-			missionAvailableList.remove(s);
 			missionAvailableList.add(s);
 			Future<T> future = new Future<>();
 			events.put(e,future);
@@ -94,7 +93,6 @@ public class MessageBrokerImpl implements MessageBroker {
 		if(e.getClass().isAssignableFrom(AgentsAvailableEvent.class)){
 			Subscriber s = agentsAvailableList.poll();
 			registers.get(s).add(e);
-			agentsAvailableList.remove(s);
 			agentsAvailableList.add(s);
 			Future<T> future = new Future<>();
 			events.put(e,future);
@@ -103,7 +101,6 @@ public class MessageBrokerImpl implements MessageBroker {
 		if(e.getClass().isAssignableFrom(GadgetAvailableEvent.class)){
 			Subscriber s = gadgetAvailableList.poll();
 			registers.get(s).add(e);
-			gadgetAvailableList.remove(s);
 			gadgetAvailableList.add(s);
 			Future<T> future = new Future<>();
 			events.put(e,future);
@@ -112,7 +109,6 @@ public class MessageBrokerImpl implements MessageBroker {
 		if(e.getClass().isAssignableFrom(ReleaseAgentsEvent.class)){
 			Subscriber s = releaseAgentsList.poll();
 			registers.get(s).add(e);
-			releaseAgentsList.remove(s);
 			releaseAgentsList.add(s);
 			Future<T> future = new Future<>();
 			events.put(e,future);
@@ -121,7 +117,6 @@ public class MessageBrokerImpl implements MessageBroker {
 		if(e.getClass().isAssignableFrom(SendAgentsEvent.class)){
 			Subscriber s = sendAgentsList.poll();
 			registers.get(s).add(e);
-			sendAgentsList.remove(s);
 			sendAgentsList.add(s);
 			Future<T> future = new Future<>();
 			events.put(e,future);

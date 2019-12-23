@@ -50,19 +50,12 @@ public class Squad {
 	 * simulates executing a mission by calling sleep.
 	 * @param time   milliseconds to sleep
 	 */
-	public void sendAgents(List<String> serials, int time){
-		synchronized (this) {
-
-			ListIterator<String> serialIterator1 = serials.listIterator();
-			while (serialIterator1.hasNext()) {
-				agents.get(serialIterator1.next()).acquire();
-			}
-			try {
+	public void sendAgents(List<String> serials, int time){ //simulates execution of a mission, agents should be already acquired.
+		try {
 				sleep(time);
 			} catch (Exception ignored) {
 			}
 			releaseAgents(serials);
-		}
 	}
 
 	/**
@@ -85,7 +78,7 @@ public class Squad {
 	}
 
 	private void acquireAgents(List<String> serials) {
-		ListIterator<String> serialIterator = serials.listIterator(); //TODO:Ask Eizenberg about sync a function in a function
+		ListIterator<String> serialIterator = serials.listIterator();
 		while (serialIterator.hasNext()) {
 			String serialNum = serialIterator.next();
 			Agent agent = agents.get(serialNum);
