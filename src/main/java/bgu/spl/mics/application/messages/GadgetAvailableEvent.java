@@ -2,15 +2,15 @@ package bgu.spl.mics.application.messages;
 
 import bgu.spl.mics.Event;
 
-public class GadgetAvailableEvent implements Event<String> {
+public class GadgetAvailableEvent implements Event{
 
-    private String senderName;
+    private String gadget;
 
-    public GadgetAvailableEvent(String senderName) {
-        this.senderName = senderName;
+    public GadgetAvailableEvent(String gadget) {
+        this.gadget = gadget;
     }
 
-    public String getSenderName() {
-        return senderName;
+    public String getGadget() {
+        return gadget;
     }
 }

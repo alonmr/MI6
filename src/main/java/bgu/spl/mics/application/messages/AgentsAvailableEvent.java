@@ -2,15 +2,17 @@ package bgu.spl.mics.application.messages;
 
 import bgu.spl.mics.Event;
 
-public class AgentsAvailableEvent implements Event<String> {
+import java.util.LinkedList;
 
-    private String senderName;
+public class AgentsAvailableEvent implements Event{
 
-    public AgentsAvailableEvent(String senderName) {
-        this.senderName = senderName;
+    private LinkedList<String> serialNumbers;
+
+    public AgentsAvailableEvent(LinkedList<String> serialNumbers) {
+        this.serialNumbers = serialNumbers;
     }
 
-    public String getSenderName() {
-        return senderName;
+    public LinkedList<String> getSerialNumbers () {
+        return serialNumbers;
     }
 }
