@@ -54,7 +54,7 @@ public class InventoryTest {
 
     @Test
     public void test2(){//check if writes to output.json
-        inventory.printToFile("Output.json");
+        inventory.printToFile("inventoryOutputFile.json");
 
     }
 

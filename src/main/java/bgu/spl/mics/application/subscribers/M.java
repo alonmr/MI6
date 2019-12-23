@@ -12,9 +12,9 @@ import bgu.spl.mics.application.passiveObjects.Diary;
  * You MAY change constructor signatures and even add new public constructors.
  */
 public class M extends Subscriber {
-	private SimplePublisher m;
+	//runnablesubpub has a simplepublisher
 	private int id;
-	private Callback<MissionReceivedEvent> callbackName;
+	private Callback<MissionReceivedEvent> callbackMissionReceived;
 	public M(int id) {
 		super("M");
 		this.id=id;
@@ -27,7 +27,7 @@ public class M extends Subscriber {
 		messageBrokerTest.subscribeEvent(MissionReceivedEvent.class,this);
 
 		// anonymous class, the method ‘call’ is overriden
-		callbackName = new Callback<MissionReceivedEvent>(){
+		callbackMissionReceived = new Callback<MissionReceivedEvent>(){
 			@Override
 			public void call(MissionReceivedEvent e) {
 				Diary.getInstance().incrementTotal();
@@ -35,7 +35,7 @@ public class M extends Subscriber {
 			}
 		};
 
-		this.subscribeEvent(MissionReceivedEvent.class, callbackName);
+		this.subscribeEvent(MissionReceivedEvent.class, callbackMissionReceived);
 
 	}
 
