@@ -6,6 +6,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
@@ -17,20 +18,23 @@ import java.util.Iterator;
 public class MI6Runner {
     public static void main(String[] args) {
         Inventory inventory = Inventory.getInstance();
-        String inventoryArray []=new String[4];//Assuming config file is input201.json
+        String[] inventoryArray=new String[0] ;
         JSONParser jsonParser = new JSONParser();
         try{
-            Object obj = jsonParser.parse(new FileReader(String.valueOf(args)));
-            JSONObject jsonObject= (JSONObject) obj;
-            JSONArray inventoryJsonArray=(JSONArray)jsonObject.get("inventory");
-            inventoryArray=new String[inventoryJsonArray.size()];
-            Iterator<String> it=inventoryJsonArray.iterator();
-            int arrayIndex=0;
-            while (it.hasNext()) {
-                inventoryArray[arrayIndex]=it.next();
-                arrayIndex++;
+            Object obj = jsonParser.parse(new FileReader("input201.json"));
+            JSONObject jsonObject = (JSONObject) obj;
+            JSONArray inventoryJsonArray = (JSONArray) jsonObject.get("inventory");
+            inventoryArray = new String[inventoryJsonArray.size()];
+            for (int i = 0; i < inventoryArray.length; i++) {
+                inventoryArray[i] = (String) inventoryJsonArray.get(i);
             }
-        } catch (IOException | ParseException e) {}
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
         inventory.load(inventoryArray);
         // TODO Implement this
     }

@@ -4,6 +4,8 @@ import bgu.spl.mics.Event;
 import bgu.spl.mics.Future;
 import bgu.spl.mics.application.passiveObjects.MissionInfo;
 
+import java.util.List;
+
 public class MissionReceivedEvent implements Event {
     //TODO: add mission info
     private MissionInfo missionInfo;
@@ -12,7 +14,10 @@ public class MissionReceivedEvent implements Event {
         this.missionInfo = missionInfo;
     }
 
-    public MissionInfo getMissionInfo() {
-        return missionInfo;
-    }
+    public String getGadget(){return missionInfo.getGadget();}
+
+    public List<String> getAgents(){return missionInfo.getSerialAgentsNumbers();}
+
+    public int getTimeExpired(){return missionInfo.getTimeExpired();}
+
 }

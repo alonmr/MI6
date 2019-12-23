@@ -15,4 +15,5 @@ public class AgentsAvailableEvent implements Event{
     public LinkedList<String> getSerialNumbers () {
         return serialNumbers;
     }
+
 }

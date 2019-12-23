@@ -12,5 +12,6 @@ public class SendAgentsEvent implements Event {
     public LinkedList<String> getAgentsToRelease() {
         return agentsToSend;
     }
+
 }
 

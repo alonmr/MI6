@@ -1,9 +1,6 @@
 package bgu.spl.mics;
 
-import bgu.spl.mics.application.messages.AgentsAvailableEvent;
-import bgu.spl.mics.application.messages.GadgetAvailableEvent;
-import bgu.spl.mics.application.messages.MissionReceivedEvent;
-import bgu.spl.mics.application.messages.TickBroadcast;
+import bgu.spl.mics.application.messages.*;
 import bgu.spl.mics.application.subscribers.M;
 import bgu.spl.mics.application.subscribers.Moneypenny;
 
@@ -26,10 +23,10 @@ public class MessageBrokerImpl implements MessageBroker {
 	private static HashMap<Subscriber, LinkedBlockingQueue<Message>> registers;//maybe should be blocking queue
 	private static List<Subscriber> agentsAvailableList;//Subscribers subscribe to this list to get this events
 	private static List<Subscriber> gadgetAvailableList;
-	private static List<Subscriber> missionAvailableList;
+	private static List<Subscriber> sendAgentsList;
+	private static List<Subscriber> releaseAgentsList;
+	private static List<Subscriber> missionAvailableList;//round robin is by event type not by subscriber
 	private static List<Subscriber> tickBroadcastList;
-	private static List<M> MsRoundRobin;
-	private static List<Moneypenny> MoneysRoundRobin;
 	private static HashMap<Event,Future> events;
 
 	/**
@@ -41,6 +38,8 @@ public class MessageBrokerImpl implements MessageBroker {
 			registers = new HashMap<>();
 			agentsAvailableList = new LinkedList<>();
 			gadgetAvailableList = new LinkedList<>();
+			sendAgentsList = new LinkedList<>();
+			releaseAgentsList = new LinkedList<>();
 			missionAvailableList = new LinkedList<>();
 			tickBroadcastList = new LinkedList<>();
 			events = new HashMap<>();
@@ -82,9 +81,48 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	
 	@Override
-	public <T> Future<T> sendEvent(Event<T> e) {//TODO: imp for other events
+	public <T> Future<T> sendEvent(Event<T> e) {//TODO: split to private methods
 		if(e.getClass().isAssignableFrom(MissionReceivedEvent.class)){
-			registers.get(missionAvailableList.get(0)).add(e);
+			Subscriber s = missionAvailableList.get(0);
+			registers.get(s).add(e);
+			missionAvailableList.remove(s);
+			missionAvailableList.add(s);
+			Future<T> future = new Future<>();
+			events.put(e,future);
+			return future;
+		}
+		if(e.getClass().isAssignableFrom(AgentsAvailableEvent.class)){
+			Subscriber s = agentsAvailableList.get(0);
+			registers.get(s).add(e);
+			agentsAvailableList.remove(s);
+			agentsAvailableList.add(s);
+			Future<T> future = new Future<>();
+			events.put(e,future);
+			return future;
+		}
+		if(e.getClass().isAssignableFrom(GadgetAvailableEvent.class)){
+			Subscriber s = gadgetAvailableList.get(0);
+			registers.get(s).add(e);
+			gadgetAvailableList.remove(s);
+			gadgetAvailableList.add(s);
+			Future<T> future = new Future<>();
+			events.put(e,future);
+			return future;
+		}
+		if(e.getClass().isAssignableFrom(ReleaseAgentsEvent.class)){
+			Subscriber s = releaseAgentsList.get(0);
+			registers.get(s).add(e);
+			releaseAgentsList.remove(s);
+			releaseAgentsList.add(s);
+			Future<T> future = new Future<>();
+			events.put(e,future);
+			return future;
+		}
+		if(e.getClass().isAssignableFrom(SendAgentsEvent.class)){
+			Subscriber s = sendAgentsList.get(0);
+			registers.get(s).add(e);
+			sendAgentsList.remove(s);
+			sendAgentsList.add(s);
 			Future<T> future = new Future<>();
 			events.put(e,future);
 			return future;
@@ -94,18 +132,16 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public void register(Subscriber m) {
-		registers.put(m,new LinkedBlockingQueue<Message>());
+		registers.put(m,new LinkedBlockingQueue<>());
 	}
 
 	@Override
 	public void unregister(Subscriber m) {
 		registers.remove(m);
-		agentsAvailableList.remove(m);
+		agentsAvailableList.remove(m);//maybe this should be sync or blocking queue
 		gadgetAvailableList.remove(m);
 		missionAvailableList.remove(m);
 		tickBroadcastList.remove(m);
-		MsRoundRobin.remove(m);
-		MoneysRoundRobin.remove(m);
 	}
 
 	@Override

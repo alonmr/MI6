@@ -13,4 +13,5 @@ public class GadgetAvailableEvent implements Event{
     public String getGadget() {
         return gadget;
     }
+
 }
