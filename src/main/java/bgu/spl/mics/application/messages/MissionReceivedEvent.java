@@ -6,9 +6,10 @@ import bgu.spl.mics.application.passiveObjects.MissionInfo;
 
 import java.util.List;
 
-public class MissionReceivedEvent implements Event {
-    //TODO: add mission info
+public class MissionReceivedEvent<T> implements Event<T> {
+
     private MissionInfo missionInfo;
+
 
     public MissionReceivedEvent(MissionInfo missionInfo) {
         this.missionInfo = missionInfo;

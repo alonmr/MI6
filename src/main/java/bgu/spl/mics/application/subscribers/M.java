@@ -5,6 +5,7 @@ import bgu.spl.mics.application.messages.AgentsAvailableEvent;
 import bgu.spl.mics.application.messages.MissionReceivedEvent;
 import bgu.spl.mics.application.passiveObjects.Diary;
 
+
 /**
  * M handles ReadyEvent - fills a report and sends agents to mission.
  *
@@ -24,7 +25,8 @@ public class M extends Subscriber {
 	protected void initialize() {
 		MessageBroker messageBrokerTest = MessageBrokerImpl.getInstance();
 		messageBrokerTest.register(this);
-		messageBrokerTest.subscribeEvent(MissionReceivedEvent.class,this);
+
+		messageBrokerTest.subscribeEvent(new MissionReceivedEvent(),this);
 
 		// anonymous class, the method ‘call’ is overriden
 		callbackMissionReceived = new Callback<MissionReceivedEvent>(){

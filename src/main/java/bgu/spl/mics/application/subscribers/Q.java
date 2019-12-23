@@ -26,7 +26,7 @@ public class Q extends Subscriber {
 	protected void initialize() {
 		MessageBroker messageBrokerTest = MessageBrokerImpl.getInstance();
 		messageBrokerTest.register(this);
-		messageBrokerTest.subscribeEvent(MissionReceivedEvent.class,this);
+		messageBrokerTest.subscribeEvent(GadgetAvailableEvent.class,this);
 
 		// anonymous class, the method ‘call’ is overriden
 		callbackGadgetAvailable = new Callback<GadgetAvailableEvent>(){

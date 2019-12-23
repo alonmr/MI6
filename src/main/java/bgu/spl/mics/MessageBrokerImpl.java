@@ -20,12 +20,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class MessageBrokerImpl implements MessageBroker {
 
 	private static MessageBrokerImpl ourInstance;
-	private static HashMap<Subscriber, LinkedBlockingQueue<Message>> registers;//maybe should be blocking queue
-	private static List<Subscriber> agentsAvailableList;//Subscribers subscribe to this list to get this events
-	private static List<Subscriber> gadgetAvailableList;
-	private static List<Subscriber> sendAgentsList;
-	private static List<Subscriber> releaseAgentsList;
-	private static List<Subscriber> missionAvailableList;//round robin is by event type not by subscriber
+	private static HashMap<Subscriber, Queue<Message>> registers;//maybe should be blocking queue
+	private static LinkedBlockingQueue<Subscriber> agentsAvailableList;//Subscribers subscribe to this list to get this events
+	private static LinkedBlockingQueue<Subscriber> gadgetAvailableList;
+	private static LinkedBlockingQueue<Subscriber> sendAgentsList;
+	private static LinkedBlockingQueue<Subscriber> releaseAgentsList;
+	private static LinkedBlockingQueue<Subscriber> missionAvailableList;//round robin is by event type not by subscriber
 	private static List<Subscriber> tickBroadcastList;
 	private static HashMap<Event,Future> events;
 
@@ -36,11 +36,11 @@ public class MessageBrokerImpl implements MessageBroker {
 		if (ourInstance == null) {
 			ourInstance = new MessageBrokerImpl();
 			registers = new HashMap<>();
-			agentsAvailableList = new LinkedList<>();
-			gadgetAvailableList = new LinkedList<>();
-			sendAgentsList = new LinkedList<>();
-			releaseAgentsList = new LinkedList<>();
-			missionAvailableList = new LinkedList<>();
+			agentsAvailableList = new LinkedBlockingQueue<>();
+			gadgetAvailableList = new LinkedBlockingQueue<>();
+			sendAgentsList = new LinkedBlockingQueue<>();
+			releaseAgentsList = new LinkedBlockingQueue<>();
+			missionAvailableList = new LinkedBlockingQueue<>();
 			tickBroadcastList = new LinkedList<>();
 			events = new HashMap<>();
 		}
@@ -83,7 +83,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public <T> Future<T> sendEvent(Event<T> e) {//TODO: split to private methods
 		if(e.getClass().isAssignableFrom(MissionReceivedEvent.class)){
-			Subscriber s = missionAvailableList.get(0);
+			Subscriber s = missionAvailableList.poll();
 			registers.get(s).add(e);
 			missionAvailableList.remove(s);
 			missionAvailableList.add(s);
@@ -92,7 +92,7 @@ public class MessageBrokerImpl implements MessageBroker {
 			return future;
 		}
 		if(e.getClass().isAssignableFrom(AgentsAvailableEvent.class)){
-			Subscriber s = agentsAvailableList.get(0);
+			Subscriber s = agentsAvailableList.poll();
 			registers.get(s).add(e);
 			agentsAvailableList.remove(s);
 			agentsAvailableList.add(s);
@@ -101,7 +101,7 @@ public class MessageBrokerImpl implements MessageBroker {
 			return future;
 		}
 		if(e.getClass().isAssignableFrom(GadgetAvailableEvent.class)){
-			Subscriber s = gadgetAvailableList.get(0);
+			Subscriber s = gadgetAvailableList.poll();
 			registers.get(s).add(e);
 			gadgetAvailableList.remove(s);
 			gadgetAvailableList.add(s);
@@ -110,7 +110,7 @@ public class MessageBrokerImpl implements MessageBroker {
 			return future;
 		}
 		if(e.getClass().isAssignableFrom(ReleaseAgentsEvent.class)){
-			Subscriber s = releaseAgentsList.get(0);
+			Subscriber s = releaseAgentsList.poll();
 			registers.get(s).add(e);
 			releaseAgentsList.remove(s);
 			releaseAgentsList.add(s);
@@ -119,7 +119,7 @@ public class MessageBrokerImpl implements MessageBroker {
 			return future;
 		}
 		if(e.getClass().isAssignableFrom(SendAgentsEvent.class)){
-			Subscriber s = sendAgentsList.get(0);
+			Subscriber s = sendAgentsList.poll();
 			registers.get(s).add(e);
 			sendAgentsList.remove(s);
 			sendAgentsList.add(s);
@@ -138,7 +138,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public void unregister(Subscriber m) {
 		registers.remove(m);
-		agentsAvailableList.remove(m);//maybe this should be sync or blocking queue
+		agentsAvailableList.remove(m);
 		gadgetAvailableList.remove(m);
 		missionAvailableList.remove(m);
 		tickBroadcastList.remove(m);
