@@ -1,5 +1,5 @@
 {
-    "inventory": [ 
+    "inventory": [
         "Sky Hook",
         "Geiger counter",
         "X-ray glasses",
@@ -12,13 +12,9 @@
             {
                 "missions": [
                     {
-                        "agents": [
-                            {
-                                "serialNumber": "006"
-                            },
-                            {
-                                "serialNumber": "007"
-                            }
+                        "serialAgentsNumbers": [
+                            "006",
+                            "007"
                         ],
                         "duration": 7,
                         "gadget": "Sky Hook",
@@ -27,7 +23,7 @@
                         "timeIssued": 3
                     },
                     {
-                        "agent": "007",
+                        "serialAgentsNumbers": ["007"],
                         "duration": 2,
                         "gadget": "Dagger shoe",
                         "name": "From Russia With Love",
@@ -35,7 +31,7 @@
                         "timeIssued": 6
                     },
                     {
-                        "agent": "007",
+                        "serialAgentsNumbers": ["007"],
                         "duration": 2,
                         "gadget": "Dagger shoe",
                         "name": "From Russia With Love",
@@ -43,9 +39,9 @@
                         "timeIssued": 15
                     },
                     {
-                        "agent": "006",
+                        "serialAgentsNumbers": ["006"],
                         "duration": 2,
-                        "gadget": "X-ray Glasses",
+                        "gadget": "X-ray glasses",
                         "name": "The World Is Not Enough",
                         "timeExpired": 100,
                         "timeIssued": 16
@@ -55,13 +51,9 @@
             {
                 "missions": [
                     {
-                        "agents": [
-                            {
-                                "serialNumber": "007"
-                            },
-                            {
-                                "serialNumber": "006"
-                            }
+                        "serialAgentsNumbers": [
+                            "007",
+                            "006"
                         ],
                         "duration": 7,
                         "gadget": "Sky Hook",

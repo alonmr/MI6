@@ -2,6 +2,7 @@ package bgu.spl.mics.application.publishers;
 
 import bgu.spl.mics.Publisher;
 import bgu.spl.mics.SimplePublisher;
+import bgu.spl.mics.application.messages.TerminateBroadcast;
 import bgu.spl.mics.application.messages.TickBroadcast;
 
 /**
@@ -33,13 +34,18 @@ public class TimeService extends Publisher {
 		while(!Thread.currentThread().isInterrupted()){
 			try{
 				Thread.sleep(100);
-			}catch(InterruptedException e){
+				Tick++;
+			}catch(InterruptedException ignored){
 
 			}
-			if(Tick >= duration)
+			if(Tick >= duration) {
+				SP.sendBroadcast(new TerminateBroadcast());
+				System.out.println("terminate sent");
 				Thread.currentThread().interrupt();
-			else
+			}
+			else {
 				SP.sendBroadcast(new TickBroadcast(Tick));
+			}
 		}
 	}
 

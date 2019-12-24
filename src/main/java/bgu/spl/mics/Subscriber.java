@@ -1,5 +1,8 @@
 package bgu.spl.mics;
 
+import bgu.spl.mics.application.messages.TerminateBroadcast;
+import bgu.spl.mics.application.messages.TickBroadcast;
+
 import java.util.HashMap;
 
 /**
@@ -114,12 +117,23 @@ public abstract class Subscriber extends RunnableSubPub {
         initialize();
         MessageBroker MSB= MessageBrokerImpl.getInstance();
         MSB.register(this);
+        Callback<TerminateBroadcast> callbackTerminate = new Callback<TerminateBroadcast>() {
+            @Override
+            public void call(TerminateBroadcast c) {
+                terminate();
+            }
+        };
+        subscribeBroadcast(TerminateBroadcast.class,callbackTerminate);
+        System.out.println("registered "+getName());
         while(!terminated){
             try {
                 Message msg = MSB.awaitMessage(this);
+               // System.out.println(getName()+" got msg");
                 Callback callback = callbackHashMap.get(msg.getClass());
-                if(callback != null)
+                if(callback != null) {
                     callback.call(msg);
+                   // System.out.println("callback called "+getName());
+                }
             }catch (InterruptedException e){
                 terminate();
             }

@@ -12,6 +12,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static java.lang.Thread.sleep;
+
 /**
  * The {@link MessageBrokerImpl class is the implementation of the MessageBroker interface.
  * Write your implementation here!
@@ -26,7 +28,8 @@ public class MessageBrokerImpl implements MessageBroker {
 	private static LinkedBlockingQueue<Subscriber> sendAgentsList;
 	private static LinkedBlockingQueue<Subscriber> releaseAgentsList;
 	private static LinkedBlockingQueue<Subscriber> missionAvailableList;
-	private static List<Subscriber> tickBroadcastList;
+	private static LinkedBlockingQueue<Subscriber> tickBroadcastList;
+	private static LinkedBlockingQueue<Subscriber> terminateBroadcastList;
 	private static HashMap<Event,Future> events;
 
 	/**
@@ -41,7 +44,8 @@ public class MessageBrokerImpl implements MessageBroker {
 			sendAgentsList = new LinkedBlockingQueue<>();
 			releaseAgentsList = new LinkedBlockingQueue<>();
 			missionAvailableList = new LinkedBlockingQueue<>();
-			tickBroadcastList = new LinkedList<>();
+			tickBroadcastList = new LinkedBlockingQueue<>();
+			terminateBroadcastList = new LinkedBlockingQueue<>();
 			events = new HashMap<>();
 		}
 		return ourInstance;
@@ -61,6 +65,8 @@ public class MessageBrokerImpl implements MessageBroker {
 	public void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
 		if(type.isAssignableFrom(TickBroadcast.class))
 			tickBroadcastList.add(m);
+		if(type.isAssignableFrom(TerminateBroadcast.class))
+			terminateBroadcastList.add(m);
 
 	}
 
@@ -74,6 +80,11 @@ public class MessageBrokerImpl implements MessageBroker {
 	public void sendBroadcast(Broadcast b) {
 		if(b.getClass().isAssignableFrom(TickBroadcast.class)) {
 			for (Subscriber s : tickBroadcastList) {
+				registers.get(s).add(b);
+			}
+		}
+		if(b.getClass().isAssignableFrom(TerminateBroadcast.class)) {
+			for (Subscriber s : terminateBroadcastList) {
 				registers.get(s).add(b);
 			}
 		}
@@ -125,9 +136,9 @@ public class MessageBrokerImpl implements MessageBroker {
 		return null;
 	}
 
-	@Override
+	@Override//TODO: change to normal queue
 	public void register(Subscriber m) {
-		registers.put(m,new LinkedBlockingQueue<>());
+		registers.put(m,new LinkedList<>());
 	}
 
 	@Override
@@ -137,6 +148,7 @@ public class MessageBrokerImpl implements MessageBroker {
 		gadgetAvailableList.remove(m);
 		missionAvailableList.remove(m);
 		tickBroadcastList.remove(m);
+		terminateBroadcastList.remove(m);
 	}
 
 	@Override
@@ -145,7 +157,7 @@ public class MessageBrokerImpl implements MessageBroker {
 			while (registers.get(m).isEmpty()) {
 				if(Thread.currentThread().isInterrupted())
 					throw new InterruptedException();
-				wait();
+				sleep(100);
 			}
 			return registers.get(m).element();
 		}
