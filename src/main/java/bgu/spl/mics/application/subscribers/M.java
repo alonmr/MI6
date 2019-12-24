@@ -3,6 +3,9 @@ package bgu.spl.mics.application.subscribers;
 import bgu.spl.mics.*;
 import bgu.spl.mics.application.messages.*;
 import bgu.spl.mics.application.passiveObjects.Diary;
+import bgu.spl.mics.application.passiveObjects.Report;
+
+import java.util.List;
 
 
 /**
@@ -14,8 +17,7 @@ import bgu.spl.mics.application.passiveObjects.Diary;
 public class M extends Subscriber {
 	private int currTick;
 	private int id;
-	private Callback<TickBroadcast> callbackTimeTickBroadcast;
-	private Callback<MissionReceivedEvent> callbackMissionReceived;
+
 	public M(int id) {
 		super("M");
 		this.id=id;
@@ -24,41 +26,41 @@ public class M extends Subscriber {
 
 	@Override
 	protected void initialize() {
-		MessageBroker messageBroker = MessageBrokerImpl.getInstance();
-		messageBroker.register(this);
-		messageBroker.subscribeEvent( MissionReceivedEvent.class,this);
-		messageBroker.subscribeBroadcast(TickBroadcast.class,this);
-		callbackTimeTickBroadcast=new Callback<TickBroadcast>(){
+		Callback<TickBroadcast> callbackTimeTickBroadcast = new Callback<TickBroadcast>() {
 			@Override
 			public void call(TickBroadcast c) {
-				currTick=c.getCurrTick();
+				currTick = c.getCurrTick();
 			}
 		};
-		callbackMissionReceived = new Callback<MissionReceivedEvent>(){
+		Callback<MissionReceivedEvent> callbackMissionReceived = new Callback<MissionReceivedEvent>() {
 			@Override
 			public void call(MissionReceivedEvent e) {
 				Diary.getInstance().incrementTotal();
-				if(currTick<e.getTimeExpired()) {
-					Future<Boolean> hasAgents = messageBroker.sendEvent(new AgentsAvailableEvent(e.getAgents()));
-					if (hasAgents.get()) {
-						Future<Boolean> hasGadget = messageBroker.sendEvent(new GadgetAvailableEvent(e.getGadget()));
-						if (hasGadget.get()) {
-
-							messageBroker.complete(e,true);
-
-						}
-						else{
-							messageBroker.complete(e,false);
-							Future<Boolean> releaseAgents= messageBroker.sendEvent(new ReleaseAgentsEvent(e.getAgents()));
-						}
-						Future<Boolean>
+				SimplePublisher SP = getSimplePublisher();
+				boolean complete = false;
+				Future<Integer> hasAgents = SP.sendEvent(new AgentsAvailableEvent(e.getAgents()));
+				if (hasAgents.get() != -1) {//-1 means failed event
+					Future<Integer> hasGadget = SP.sendEvent(new GadgetAvailableEvent(e.getGadget()));
+					if (hasGadget.get() != -1 && currTick < e.getTimeExpired()) {
+						Future<List<String>> sendAgents = SP.sendEvent(new SendAgentsEvent(e.getAgents(),e.getDuration()));
+						complete(e, true);
+						complete = true;
+						Diary.getInstance().addReport(new Report(e.getMissonName(), id, hasAgents.get(), e.getAgents(),
+									sendAgents.get(), e.getGadget(), e.getTimeIssued(), hasGadget.get(), Math.max(currTick, hasGadget.get())));
+							//TODO: addReportEvent.
+					} else {
+						complete(e, false);
 					}
+				}
+				if (!complete) {
+					Future<Boolean> releaseAgents = SP.sendEvent(new ReleaseAgentsEvent(e.getAgents()));
+					releaseAgents.get();
 				}
 			}
 		};
 
 		this.subscribeEvent(MissionReceivedEvent.class, callbackMissionReceived);
-
+		this.subscribeBroadcast(TickBroadcast.class, callbackTimeTickBroadcast);
 	}
 
 }

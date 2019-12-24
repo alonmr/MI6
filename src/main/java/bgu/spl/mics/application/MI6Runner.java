@@ -18,9 +18,9 @@ import java.util.Iterator;
 public class MI6Runner {
     public static void main(String[] args) {
         Inventory inventory = Inventory.getInstance();
-        String[] inventoryArray=new String[0] ;
+        String[] inventoryArray = new String[0];
         JSONParser jsonParser = new JSONParser();
-        try{
+        try {
             Object obj = jsonParser.parse(new FileReader("input201.json"));
             JSONObject jsonObject = (JSONObject) obj;
             JSONArray inventoryJsonArray = (JSONArray) jsonObject.get("inventory");
@@ -28,14 +28,10 @@ public class MI6Runner {
             for (int i = 0; i < inventoryArray.length; i++) {
                 inventoryArray[i] = (String) inventoryJsonArray.get(i);
             }
-        } catch (ParseException ex) {
+        } catch (ParseException | IOException ex) {
             ex.printStackTrace();
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
+            inventory.load(inventoryArray);
+            // TODO Implement this
         }
-        inventory.load(inventoryArray);
-        // TODO Implement this
     }
 }

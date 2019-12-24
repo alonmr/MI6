@@ -8,6 +8,10 @@ import bgu.spl.mics.application.messages.AgentsAvailableEvent;
 import bgu.spl.mics.application.messages.ReleaseAgentsEvent;
 import bgu.spl.mics.application.messages.SendAgentsEvent;
 import bgu.spl.mics.application.messages.TickBroadcast;
+import bgu.spl.mics.application.passiveObjects.Squad;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Only this type of Subscriber can access the squad.
@@ -28,12 +32,7 @@ public class Moneypenny extends Subscriber {
 
 	@Override
 	protected void initialize() {
-		MessageBroker messageBroker = MessageBrokerImpl.getInstance();
-		messageBroker.register(this);
-		messageBroker.subscribeEvent(AgentsAvailableEvent.class,this);
-		messageBroker.subscribeEvent(SendAgentsEvent.class,this);
-		messageBroker.subscribeEvent(ReleaseAgentsEvent.class,this);
-
+		Squad ourSquad= Squad.getInstance();
 		Callback<TickBroadcast> callbackTimeTickBroadcast = new Callback<TickBroadcast>() {
 			@Override
 			public void call(TickBroadcast c) {
@@ -44,25 +43,32 @@ public class Moneypenny extends Subscriber {
 		Callback<AgentsAvailableEvent> callbackAgentsAvailable = new Callback<AgentsAvailableEvent>() {
 			@Override
 			public void call(AgentsAvailableEvent e) {
-
+				ourSquad.getAgents(e.getSerialNumbers());
+				complete(e,id);
 			}
 		};
 
 		Callback<SendAgentsEvent> callbackSendAgents = new Callback<SendAgentsEvent>() {
 			@Override
 			public void call(SendAgentsEvent e) {
-
+				ourSquad.sendAgents(e.getAgents(),e.getTime());
+				List<String> agentNameList=ourSquad.getAgentsNames(e.getAgents());
+				complete(e,agentNameList);
 			}
 		};
 
 		Callback<ReleaseAgentsEvent> callbackReleaseAgents = new Callback<ReleaseAgentsEvent>() {
 			@Override
 			public void call(ReleaseAgentsEvent e) {
-
+				ourSquad.releaseAgents(e.getAgentsToRelease());
+				complete(e,true);
 			}
 		};
 
 		this.subscribeEvent(AgentsAvailableEvent.class, callbackAgentsAvailable);
+		this.subscribeEvent(SendAgentsEvent.class, callbackSendAgents);
+		this.subscribeEvent(ReleaseAgentsEvent.class, callbackReleaseAgents);
+		this.subscribeBroadcast(TickBroadcast.class,callbackTimeTickBroadcast);
 
 	}
 

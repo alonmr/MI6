@@ -25,4 +25,12 @@ public class MissionReceivedEvent implements Event<Boolean> {
 
     public int getTimeExpired(){return missionInfo.getTimeExpired();}
 
+    public String getMissonName() {return missionInfo.getMissionName();}
+
+    public int getTimeIssued(){return missionInfo.getTimeIssued();}
+
+    public int getDuration(){return missionInfo.getDuration();}
+
+
+
 }

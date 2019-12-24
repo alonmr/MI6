@@ -39,9 +39,12 @@ public class Squad {
 	 * Releases agents.
 	 */
 	public void releaseAgents(List<String> serials){
-		ListIterator<String> serialIterator = serials.listIterator();
-		while(serialIterator.hasNext()){
-			agents.get(serialIterator.next()).release();//TODO: check if it works because get.
+		synchronized (agents) {
+			ListIterator<String> serialIterator = serials.listIterator();
+			while (serialIterator.hasNext()) {
+				agents.get(serialIterator.next()).release();
+			}
+			notifyAll();
 		}
 
 	}
@@ -52,7 +55,7 @@ public class Squad {
 	 */
 	public void sendAgents(List<String> serials, int time){ //simulates execution of a mission, agents should be already acquired.
 		try {
-				sleep(time);
+				sleep(time*100);
 			} catch (Exception ignored) {
 			}
 			releaseAgents(serials);
@@ -73,8 +76,9 @@ public class Squad {
 					return false;
 			}
 			acquireAgents(serials);
+			notifyAll();
 		}
-		return true;//TODO:Method should acquire agents before
+		return true;
 	}
 
 	private void acquireAgents(List<String> serials) {
@@ -84,7 +88,7 @@ public class Squad {
 			Agent agent = agents.get(serialNum);
 			while(!agent.isAvailable()){
 				try{wait();}
-				catch (Exception ignored){};
+				catch (Exception ignored){}
 			}
 			agent.acquire();
 		}

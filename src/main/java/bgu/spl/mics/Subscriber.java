@@ -112,6 +112,18 @@ public abstract class Subscriber extends RunnableSubPub {
     @Override
     public final void run() {
         initialize();
+        MessageBroker MSB= MessageBrokerImpl.getInstance();
+        MSB.register(this);
+        while(!terminated){
+            try {
+                Message msg = MSB.awaitMessage(this);
+                Callback callback = callbackHashMap.get(msg.getClass());
+                if(callback != null)
+                    callback.call(msg);
+            }catch (InterruptedException e){
+                terminate();
+            }
+        }
     }
 
 }

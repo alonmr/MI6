@@ -31,7 +31,7 @@ public class Diary {
 	}
 
 	public void incrementTotal(){
-		ourInstance.total.incrementAndGet();
+		total.incrementAndGet();
 	}
 
 	public List<Report> getReports() {
@@ -43,8 +43,10 @@ public class Diary {
 	 * @param reportToAdd - the report to add
 	 */
 	public void addReport(Report reportToAdd){
-		reports.add(reportToAdd);
-		ourInstance.incrementTotal();
+		synchronized (reports) {
+			reports.add(reportToAdd);
+		}
+		incrementTotal();
 	}
 
 	/**

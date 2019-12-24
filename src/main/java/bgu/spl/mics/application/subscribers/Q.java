@@ -18,19 +18,14 @@ import bgu.spl.mics.application.passiveObjects.Inventory;
 public class Q extends Subscriber {
 
 	Callback<GadgetAvailableEvent> callbackGadgetAvailable;
-	int currTick;
+	private int currTick;
 	public Q() {
-		super("Change_This_Name");
-		// TODO Implement this
+		super("Q");
 	}
 
 	@Override
 	protected void initialize() {
 		Inventory ourInventory= Inventory.getInstance();
-		MessageBroker messageBroker = MessageBrokerImpl.getInstance();
-		messageBroker.register(this);
-		messageBroker.subscribeEvent(GadgetAvailableEvent.class,this);
-
 		Callback<TickBroadcast> callbackTimeTickBroadcast = new Callback<TickBroadcast>() {
 			@Override
 			public void call(TickBroadcast c) {
@@ -41,16 +36,16 @@ public class Q extends Subscriber {
 			@Override
 			public void call(GadgetAvailableEvent e) {
 				if (!ourInventory.getItem(e.getGadget())){
-					messageBroker.complete(e,false);
+					complete(e,-1);
 				}
 				else
-					messageBroker.complete(e,true);
+					complete(e,currTick);
 
 			}
 		};
 
 		this.subscribeEvent(GadgetAvailableEvent.class, callbackGadgetAvailable);
-
+		this.subscribeBroadcast(TickBroadcast.class,callbackTimeTickBroadcast);
 	}
 
 }

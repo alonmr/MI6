@@ -1,8 +1,5 @@
 package bgu.spl.mics.application.subscribers;
-import bgu.spl.mics.Callback;
-import bgu.spl.mics.MessageBroker;
-import bgu.spl.mics.MessageBrokerImpl;
-import bgu.spl.mics.Subscriber;
+import bgu.spl.mics.*;
 import bgu.spl.mics.application.messages.MissionReceivedEvent;
 import bgu.spl.mics.application.messages.TickBroadcast;
 import bgu.spl.mics.application.passiveObjects.Diary;
@@ -29,20 +26,17 @@ public class Intelligence extends Subscriber {
 
 	@Override
 	protected void initialize() {
-		MessageBroker messageBroker= MessageBrokerImpl.getInstance();
-		messageBroker.register(this);
-		messageBroker.subscribeBroadcast(TickBroadcast.class,this);
-
+		SimplePublisher SP = getSimplePublisher();
 		callbackTick = new Callback<TickBroadcast>(){
 			@Override
 			public void call(TickBroadcast b) {
 				if(!missions.isEmpty()) {
 					MissionInfo missionInfo = missions.remove();
-					messageBroker.sendEvent(new MissionReceivedEvent(missionInfo));
+					SP.sendEvent(new MissionReceivedEvent(missionInfo));
 				}
 			}
 		};
-
+		this.subscribeBroadcast(TickBroadcast.class,callbackTick);
 	}
 
 }
