@@ -28,9 +28,11 @@ public class Moneypenny extends Subscriber {
 
 	@Override
 	protected void initialize() {
-		MessageBroker messageBrokerTest = MessageBrokerImpl.getInstance();
-		messageBrokerTest.register(this);
-		messageBrokerTest.subscribeEvent(AgentsAvailableEvent.class,this);
+		MessageBroker messageBroker = MessageBrokerImpl.getInstance();
+		messageBroker.register(this);
+		messageBroker.subscribeEvent(AgentsAvailableEvent.class,this);
+		messageBroker.subscribeEvent(SendAgentsEvent.class,this);
+		messageBroker.subscribeEvent(ReleaseAgentsEvent.class,this);
 
 		Callback<TickBroadcast> callbackTimeTickBroadcast = new Callback<TickBroadcast>() {
 			@Override

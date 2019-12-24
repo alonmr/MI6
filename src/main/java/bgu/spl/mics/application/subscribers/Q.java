@@ -6,6 +6,8 @@ import bgu.spl.mics.MessageBrokerImpl;
 import bgu.spl.mics.Subscriber;
 import bgu.spl.mics.application.messages.GadgetAvailableEvent;
 import bgu.spl.mics.application.messages.MissionReceivedEvent;
+import bgu.spl.mics.application.messages.TickBroadcast;
+import bgu.spl.mics.application.passiveObjects.Inventory;
 
 /**
  * Q is the only Subscriber\Publisher that has access to the {@link bgu.spl.mics.application.passiveObjects.Inventory}.
@@ -16,7 +18,7 @@ import bgu.spl.mics.application.messages.MissionReceivedEvent;
 public class Q extends Subscriber {
 
 	Callback<GadgetAvailableEvent> callbackGadgetAvailable;
-
+	int currTick;
 	public Q() {
 		super("Change_This_Name");
 		// TODO Implement this
@@ -24,14 +26,25 @@ public class Q extends Subscriber {
 
 	@Override
 	protected void initialize() {
-		MessageBroker messageBrokerTest = MessageBrokerImpl.getInstance();
-		messageBrokerTest.register(this);
-		messageBrokerTest.subscribeEvent(GadgetAvailableEvent.class,this);
+		Inventory ourInventory= Inventory.getInstance();
+		MessageBroker messageBroker = MessageBrokerImpl.getInstance();
+		messageBroker.register(this);
+		messageBroker.subscribeEvent(GadgetAvailableEvent.class,this);
 
-		// anonymous class, the method ‘call’ is overriden
+		Callback<TickBroadcast> callbackTimeTickBroadcast = new Callback<TickBroadcast>() {
+			@Override
+			public void call(TickBroadcast c) {
+				 currTick = c.getCurrTick();
+			}
+		};
 		callbackGadgetAvailable = new Callback<GadgetAvailableEvent>(){
 			@Override
 			public void call(GadgetAvailableEvent e) {
+				if (!ourInventory.getItem(e.getGadget())){
+					messageBroker.complete(e,false);
+				}
+				else
+					messageBroker.complete(e,true);
 
 			}
 		};
