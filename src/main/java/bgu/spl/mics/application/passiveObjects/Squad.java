@@ -11,7 +11,7 @@ import static java.lang.Thread.sleep;
  */
 public class Squad {
 
-	private Map<String, Agent> agents;
+	private Map<String, Agent> agentsMap;
 	private static Squad ourInstance;
 	/**
 	 * Retrieves the single instance of this class.
@@ -26,23 +26,23 @@ public class Squad {
 	/**
 	 * Initializes the squad. This method adds all the agents to the squad.
 	 * <p>
-     * @param inventory    Data structure containing all data necessary for initialization
+     * @param agents    Data structure containing all data necessary for initialization
      * 						of the squad.
      */
-	public void load (HashMap<String, Agent> inventory) {
-		if (agents == null)
-			agents = new HashMap<>();
-		agents.putAll(inventory); //Copies inventory elements to agents HashMap.
+	public void load (HashMap<String, Agent> agents) {
+		if (agentsMap == null)
+			agentsMap = new HashMap<>();
+		agentsMap.putAll(agents); //Copies agents elements to agents HashMap.
 	}
 
 	/**
 	 * Releases agents.
 	 */
 	public void releaseAgents(List<String> serials){
-		synchronized (agents) {
+		synchronized (agentsMap) {
 			ListIterator<String> serialIterator = serials.listIterator();
 			while (serialIterator.hasNext()) {
-				agents.get(serialIterator.next()).release();
+				agentsMap.get(serialIterator.next()).release();
 			}
 			notifyAll();
 		}
@@ -67,11 +67,11 @@ public class Squad {
 	 * @return ‘false’ if an agent of serialNumber ‘serial’ is missing, and ‘true’ otherwise
 	 */
 	public boolean getAgents(List<String> serials) {
-		synchronized (agents) {
+		synchronized (agentsMap) {
 			ListIterator<String> serialIterator = serials.listIterator();
 			while (serialIterator.hasNext()) {
 				String serialNum = serialIterator.next();
-				if (agents.containsKey(serialNum)) {
+				if (agentsMap.containsKey(serialNum)) {
 				} else
 					return false;
 			}
@@ -85,7 +85,7 @@ public class Squad {
 		ListIterator<String> serialIterator = serials.listIterator();
 		while (serialIterator.hasNext()) {
 			String serialNum = serialIterator.next();
-			Agent agent = agents.get(serialNum);
+			Agent agent = agentsMap.get(serialNum);
 			while(!agent.isAvailable()){
 				try{wait();}
 				catch (Exception ignored){}
@@ -104,8 +104,8 @@ public class Squad {
 		ListIterator<String> serialIterator = serials.listIterator();
 		while (serialIterator.hasNext()) {
 			String serialNum = serialIterator.next();
-			if (agents.containsKey(serialNum)) {
-				namesList.add(agents.get(serialNum).getName());
+			if (agentsMap.containsKey(serialNum)) {
+				namesList.add(agentsMap.get(serialNum).getName());
 			}
 		}
 		return namesList;

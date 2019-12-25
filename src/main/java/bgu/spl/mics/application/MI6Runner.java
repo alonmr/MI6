@@ -34,34 +34,20 @@ public class MI6Runner {
         MessageBrokerImpl.getInstance();
         Inventory inventoryInstance = Inventory.getInstance();
         Squad squadInstance = Squad.getInstance();
-        String[] inventoryArray = new String[0];
-        String[] squadArray= new String[0];
-        HashMap<String, Agent> agents = new HashMap<String, Agent>();
+
 
         JSONParser jsonParser = new JSONParser();
         try {
             Object obj = jsonParser.parse(new FileReader("input201.json"));
             JSONObject jsonObject = (JSONObject) obj;
-            JSONArray squadJsonArray = (JSONArray) jsonObject.get("squad");
-            JSONArray inventoryJsonArray = (JSONArray) jsonObject.get("inventory");
-            JSONObject servicesObject= (JSONObject) jsonObject.get("services");
-            JSONArray intelligenceArray=(JSONArray) servicesObject.get("intelligence");
+            loadToInventory(obj,inventoryInstance);
+            loadToSquad(obj,squadInstance);
             List<Intelligence> intelligenceList=new LinkedList<Intelligence>();
-            for(int i=0;i<intelligenceArray.size();i++) {
-                LinkedList<MissionInfo> missionInfoList=new LinkedList<MissionInfo>();
-                JSONObject missionArray = (JSONObject) intelligenceArray.get(i);
-                JSONArray insideMission = (JSONArray) missionArray.get("missions");
-                insideMission.forEach(data -> parseMissionArray((JSONObject) data,missionInfoList));
-                Intelligence intelligence= new Intelligence(missionInfoList);
-                intelligenceList.add(intelligence);
-            }
-            inventoryArray = new String[inventoryJsonArray.size()];
-            for (int i = 0; i < inventoryArray.length; i++) {
-                inventoryArray[i] = (String) inventoryJsonArray.get(i);
-            }
-            squadJsonArray.forEach( squad -> parseSquadObject( (JSONObject) squad ,agents ));
-            inventoryInstance.load(inventoryArray);
-            squadInstance.load(agents);
+            addToIntelligenceList(obj,intelligenceList);
+            JSONObject servicesObject=getServicesObject(obj);
+
+
+
             TimeService timeService=new TimeService(Integer.parseInt(servicesObject.get("time").toString()));
             Thread TS = new Thread(timeService);
             TS.start();
@@ -93,6 +79,44 @@ public class MI6Runner {
         } catch (ParseException | IOException | InterruptedException ex) {
             System.out.println("exception caught");
         }
+    }
+
+    private static JSONObject getServicesObject(Object obj) {
+        JSONObject jsonObject = (JSONObject) obj;
+        JSONObject servicesObject= (JSONObject) jsonObject.get("services");
+        return servicesObject;
+    }
+
+    private static void addToIntelligenceList(Object obj, List<Intelligence> intelligenceList) {
+        JSONObject servicesObject= getServicesObject(obj);
+        JSONArray intelligenceArray=(JSONArray) servicesObject.get("intelligence");
+        for(int i=0;i<intelligenceArray.size();i++) {
+            LinkedList<MissionInfo> missionInfoList=new LinkedList<MissionInfo>();
+            JSONObject missionArray = (JSONObject) intelligenceArray.get(i);
+            JSONArray insideMission = (JSONArray) missionArray.get("missions");
+            insideMission.forEach(data -> parseMissionArray((JSONObject) data,missionInfoList));
+            Intelligence intelligence= new Intelligence(missionInfoList);
+            intelligenceList.add(intelligence);
+        }
+    }
+
+    private static void loadToSquad(Object obj, Squad squadInstance) {
+        JSONObject jsonObject = (JSONObject) obj;
+        HashMap<String, Agent> agents = new HashMap<String, Agent>();
+        JSONArray squadJsonArray = (JSONArray) jsonObject.get("squad");
+        squadJsonArray.forEach( squad -> parseSquadObject( (JSONObject) squad ,agents ));
+        squadInstance.load(agents);
+
+    }
+
+    private static void loadToInventory(Object obj, Inventory inventoryInstance) {
+        JSONObject jsonObject = (JSONObject) obj;
+        JSONArray inventoryJsonArray = (JSONArray) jsonObject.get("inventory");
+        String[] inventoryArray = new String[inventoryJsonArray.size()];
+        for (int i = 0; i < inventoryArray.length; i++) {
+            inventoryArray[i] = (String) inventoryJsonArray.get(i);
+        }
+        inventoryInstance.load(inventoryArray);
     }
 
     private static void parseMissionArray(JSONObject mission, List<MissionInfo> missionInfoList) {
