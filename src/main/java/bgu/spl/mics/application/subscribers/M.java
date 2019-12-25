@@ -20,7 +20,7 @@ public class M extends Subscriber {
 	private int id;
 
 	public M(int id) {
-		super("M"+id);
+		super("M "+id);
 		this.id=id;
 		currTick=0;
 	}
@@ -41,7 +41,7 @@ public class M extends Subscriber {
 				SimplePublisher SP = getSimplePublisher();
 				boolean complete = false;
 				Future<Integer> hasAgents = SP.sendEvent(new AgentsAvailableEvent(e.getAgents()));
-				if (hasAgents!=null && hasAgents.get() != -1) {//-1 means failed event
+				if (hasAgents.get((e.getTimeExpired()-e.getTimeIssued())*100,TimeUnit.NANOSECONDS) != null) {
 					Future<Integer> hasGadget = SP.sendEvent(new GadgetAvailableEvent(e.getGadget()));
 					if (hasGadget.get() != -1 && currTick < e.getTimeExpired()) {
 						Future<List<String>> sendAgents = SP.sendEvent(new SendAgentsEvent(e.getAgents(),e.getDuration()));
@@ -57,7 +57,7 @@ public class M extends Subscriber {
 				}
 				if (!complete) {
 					Future<Boolean> releaseAgents = SP.sendEvent(new ReleaseAgentsEvent(e.getAgents()));
-					releaseAgents.get((e.getTimeExpired()-e.getDuration())*100, TimeUnit.NANOSECONDS);
+					releaseAgents.get();
 					System.out.println("failed mission no agents");
 				}
 			}

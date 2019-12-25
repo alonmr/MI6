@@ -39,14 +39,13 @@ public class Squad {
 	 * Releases agents.
 	 */
 	public void releaseAgents(List<String> serials){
-		synchronized (agentsMap) {
+		synchronized (this) {
 			ListIterator<String> serialIterator = serials.listIterator();
 			while (serialIterator.hasNext()) {
 				agentsMap.get(serialIterator.next()).release();
 			}
 			notifyAll();
 		}
-
 	}
 
 	/**
@@ -76,7 +75,6 @@ public class Squad {
 					return false;
 			}
 			acquireAgents(serials);
-			notifyAll();
 		}
 		return true;
 	}
@@ -87,7 +85,8 @@ public class Squad {
 			String serialNum = serialIterator.next();
 			Agent agent = agentsMap.get(serialNum);
 			while(!agent.isAvailable()){
-				try{wait();}
+				try{wait();
+					}
 				catch (Exception ignored){}
 			}
 			agent.acquire();

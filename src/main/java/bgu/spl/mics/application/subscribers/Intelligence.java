@@ -22,7 +22,7 @@ public class Intelligence extends Subscriber {
 	private int id;
 
 	public Intelligence(LinkedList<MissionInfo> missions,int id) {
-		super("Intelligence"+id);
+		super("Intelligence "+id);
 		this.missions=missions;
 	}
 

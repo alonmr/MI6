@@ -26,7 +26,7 @@ public class Moneypenny extends Subscriber {
 
 	private int currTick;
 	public Moneypenny(int id) {
-		super("Moneypenny"+id);
+		super("Moneypenny "+id);
 		this.id = id;
 	}
 
