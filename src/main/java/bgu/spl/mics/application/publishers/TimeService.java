@@ -5,6 +5,8 @@ import bgu.spl.mics.SimplePublisher;
 import bgu.spl.mics.application.messages.TerminateBroadcast;
 import bgu.spl.mics.application.messages.TickBroadcast;
 
+import static java.lang.Thread.sleep;
+
 /**
  * TimeService is the global system timer There is only one instance of this Publisher.
  * It keeps track of the amount of ticks passed since initialization and notifies
@@ -26,27 +28,25 @@ public class TimeService extends Publisher {
 	}
 
 	@Override
-	protected void initialize() {}
+	protected void initialize() {
+	}
 
 	@Override
 	public void run() {
 		SimplePublisher SP = getSimplePublisher();
-		while(!Thread.currentThread().isInterrupted()){
-			try{
-				Thread.sleep(100);
-				Tick++;
-			}catch(InterruptedException ignored){
+		while (Tick < duration) {
+			try {
+				sleep(100);
+				Tick+=1;
+				System.out.println(this.Tick);
+			} catch (InterruptedException ignored) {
+				System.out.println("time service exception");
 
 			}
-			if(Tick >= duration) {
-				SP.sendBroadcast(new TerminateBroadcast());
-				System.out.println("terminate sent");
-				Thread.currentThread().interrupt();
-			}
-			else {
-				SP.sendBroadcast(new TickBroadcast(Tick));
-			}
+			SP.sendBroadcast(new TickBroadcast(Tick));
+		}
+			SP.sendBroadcast(new TerminateBroadcast());
+			System.out.println("terminate sent");
+			Thread.currentThread().interrupt();
 		}
 	}
-
-}

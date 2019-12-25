@@ -26,7 +26,7 @@ public class Moneypenny extends Subscriber {
 
 	private int currTick;
 	public Moneypenny(int id) {
-		super("Moneypenny");
+		super("Moneypenny"+id);
 		this.id = id;
 	}
 
@@ -64,8 +64,8 @@ public class Moneypenny extends Subscriber {
 				complete(e,true);
 			}
 		};
-
-		this.subscribeEvent(AgentsAvailableEvent.class, callbackAgentsAvailable);
+		if(id != 1)
+			this.subscribeEvent(AgentsAvailableEvent.class, callbackAgentsAvailable);
 		this.subscribeEvent(SendAgentsEvent.class, callbackSendAgents);
 		this.subscribeEvent(ReleaseAgentsEvent.class, callbackReleaseAgents);
 		this.subscribeBroadcast(TickBroadcast.class,callbackTimeTickBroadcast);

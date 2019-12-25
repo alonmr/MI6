@@ -39,7 +39,6 @@ public class MI6Runner {
         JSONParser jsonParser = new JSONParser();
         try {
             Object obj = jsonParser.parse(new FileReader("input201.json"));
-            JSONObject jsonObject = (JSONObject) obj;
             loadToInventory(obj,inventoryInstance);
             loadToSquad(obj,squadInstance);
             List<Intelligence> intelligenceList=new LinkedList<Intelligence>();
@@ -63,11 +62,13 @@ public class MI6Runner {
                 m.execute(new M(i+1));
             }
             m.shutdown();
-            ExecutorService moneyPenny = Executors.newFixedThreadPool(amountOfMoneyPenny);
-            for(int i = 0; i<amountOfMoneyPenny ; i++){
+            ExecutorService moneyPenny = Executors.newFixedThreadPool(amountOfMoneyPenny-1);
+            for(int i = 1; i<amountOfMoneyPenny ; i++){
                 moneyPenny.execute(new Moneypenny(i+1));
             }
             moneyPenny.shutdown();
+            Thread moneyPennyForRelease = new Thread(new Moneypenny(1));
+            moneyPennyForRelease.start();
             Thread Q =new Thread(new Q());
             Q.start();
             TS.join();//time service is done
@@ -75,7 +76,6 @@ public class MI6Runner {
             System.out.println("terminated");
             Inventory.getInstance().printToFile("inventoryOutputFile");
             Diary.getInstance().printToFile("diaryOutputFile");
-            System.out.println("malshin");
         } catch (ParseException | IOException | InterruptedException ex) {
             System.out.println("exception caught");
         }
@@ -95,7 +95,7 @@ public class MI6Runner {
             JSONObject missionArray = (JSONObject) intelligenceArray.get(i);
             JSONArray insideMission = (JSONArray) missionArray.get("missions");
             insideMission.forEach(data -> parseMissionArray((JSONObject) data,missionInfoList));
-            Intelligence intelligence= new Intelligence(missionInfoList);
+            Intelligence intelligence= new Intelligence(missionInfoList,i+1);
             intelligenceList.add(intelligence);
         }
     }

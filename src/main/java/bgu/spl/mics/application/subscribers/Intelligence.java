@@ -19,9 +19,10 @@ public class Intelligence extends Subscriber {
 
 	private LinkedList<MissionInfo> missions;
 	private Callback<TickBroadcast> callbackTick;
+	private int id;
 
-	public Intelligence(LinkedList<MissionInfo> missions) {
-		super("Intelligence");
+	public Intelligence(LinkedList<MissionInfo> missions,int id) {
+		super("Intelligence"+id);
 		this.missions=missions;
 	}
 

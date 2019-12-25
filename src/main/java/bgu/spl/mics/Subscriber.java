@@ -114,30 +114,29 @@ public abstract class Subscriber extends RunnableSubPub {
      */
     @Override
     public final void run() {
-        initialize();
         MessageBroker MSB= MessageBrokerImpl.getInstance();
         MSB.register(this);
         Callback<TerminateBroadcast> callbackTerminate = new Callback<TerminateBroadcast>() {
             @Override
             public void call(TerminateBroadcast c) {
+                System.out.println(getName()+" terminates");
                 terminate();
             }
         };
         subscribeBroadcast(TerminateBroadcast.class,callbackTerminate);
         System.out.println("registered "+getName());
+        initialize();
         while(!terminated){
             try {
                 Message msg = MSB.awaitMessage(this);
                // System.out.println(getName()+" got msg");
                 Callback callback = callbackHashMap.get(msg.getClass());
-                if(callback != null) {
-                    callback.call(msg);
-                   // System.out.println("callback called "+getName());
-                }
+                callback.call(msg);
             }catch (InterruptedException e){
                 terminate();
             }
         }
+        MSB.unregister(this);
     }
 
 }

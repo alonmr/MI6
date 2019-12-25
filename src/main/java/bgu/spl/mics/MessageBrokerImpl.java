@@ -22,7 +22,7 @@ import static java.lang.Thread.sleep;
 public class MessageBrokerImpl implements MessageBroker {
 
 	private static MessageBrokerImpl ourInstance;
-	private static HashMap<Subscriber, Queue<Message>> registers;//maybe should be blocking queue
+	private static HashMap<String, Queue<Message>> registers;//maybe should be blocking queue
 	private static LinkedBlockingQueue<Subscriber> agentsAvailableList;//Subscribers subscribe to this list to get this events
 	private static LinkedBlockingQueue<Subscriber> gadgetAvailableList;
 	private static LinkedBlockingQueue<Subscriber> sendAgentsList;
@@ -49,7 +49,7 @@ public class MessageBrokerImpl implements MessageBroker {
 			events = new HashMap<>();
 		}
 		return ourInstance;
-	}
+	} //TODO: make msgBroker Safe Singelton
 
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {
@@ -78,14 +78,18 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public void sendBroadcast(Broadcast b) {
-		if(b.getClass().isAssignableFrom(TickBroadcast.class)) {
+		if(b.getClass().isAssignableFrom(TickBroadcast.class) & !tickBroadcastList.isEmpty()) {
+			synchronized (tickBroadcastList){
 			for (Subscriber s : tickBroadcastList) {
-				registers.get(s).add(b);
+				System.out.println(s.getName() + " adding broadcast to queue");
+				registers.get(s.getName()).add(b);
+			}
 			}
 		}
-		if(b.getClass().isAssignableFrom(TerminateBroadcast.class)) {
+		if(b.getClass().isAssignableFrom(TerminateBroadcast.class) & !terminateBroadcastList.isEmpty()) {
 			for (Subscriber s : terminateBroadcastList) {
-				registers.get(s).add(b);
+				System.out.println(s.getName()+" adding terminate broadcast to queue");
+				registers.get(s.getName()).add(b);
 			}
 		}
 	}
@@ -93,41 +97,45 @@ public class MessageBrokerImpl implements MessageBroker {
 	
 	@Override
 	public <T> Future<T> sendEvent(Event<T> e) {//TODO: split to private methods
-		if(e.getClass().isAssignableFrom(MissionReceivedEvent.class)){
+		//TODO: messageBroker shouldn't know what kind of messages it receives.
+		if(e.getClass().isAssignableFrom(MissionReceivedEvent.class) & !missionAvailableList.isEmpty()){
 			Subscriber s = missionAvailableList.poll();
-			registers.get(s).add(e);
+			System.out.println(s.getName()+" adding mission received");
+			registers.get(s.getName()).add(e);
 			missionAvailableList.add(s);
 			Future<T> future = new Future<>();
 			events.put(e,future);
 			return future;
 		}
-		if(e.getClass().isAssignableFrom(AgentsAvailableEvent.class)){
+		if(e.getClass().isAssignableFrom(AgentsAvailableEvent.class) & !agentsAvailableList.isEmpty()){ ;
 			Subscriber s = agentsAvailableList.poll();
-			registers.get(s).add(e);
+			System.out.println(agentsAvailableList.toString());
+			System.out.println(s.getName()+" adding agents available");
+			registers.get(s.getName()).add(e);
 			agentsAvailableList.add(s);
 			Future<T> future = new Future<>();
 			events.put(e,future);
 			return future;
 		}
-		if(e.getClass().isAssignableFrom(GadgetAvailableEvent.class)){
+		if(e.getClass().isAssignableFrom(GadgetAvailableEvent.class) & !gadgetAvailableList.isEmpty()){
 			Subscriber s = gadgetAvailableList.poll();
-			registers.get(s).add(e);
+			registers.get(s.getName()).add(e);
 			gadgetAvailableList.add(s);
 			Future<T> future = new Future<>();
 			events.put(e,future);
 			return future;
 		}
-		if(e.getClass().isAssignableFrom(ReleaseAgentsEvent.class)){
+		if(e.getClass().isAssignableFrom(ReleaseAgentsEvent.class) & !releaseAgentsList.isEmpty()){
 			Subscriber s = releaseAgentsList.poll();
-			registers.get(s).add(e);
+			registers.get(s.getName()).add(e);
 			releaseAgentsList.add(s);
 			Future<T> future = new Future<>();
 			events.put(e,future);
 			return future;
 		}
-		if(e.getClass().isAssignableFrom(SendAgentsEvent.class)){
+		if(e.getClass().isAssignableFrom(SendAgentsEvent.class) & !sendAgentsList.isEmpty()){
 			Subscriber s = sendAgentsList.poll();
-			registers.get(s).add(e);
+			registers.get(s.getName()).add(e);
 			sendAgentsList.add(s);
 			Future<T> future = new Future<>();
 			events.put(e,future);
@@ -138,31 +146,32 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override//TODO: change to normal queue
 	public void register(Subscriber m) {
-		registers.put(m,new LinkedList<>());
+		registers.put(m.getName(),new LinkedBlockingQueue<>());
 	}
 
 	@Override
 	public void unregister(Subscriber m) {
-		registers.remove(m);
+		System.out.println(m.getName()+" unregisters");
 		agentsAvailableList.remove(m);
 		gadgetAvailableList.remove(m);
 		missionAvailableList.remove(m);
 		tickBroadcastList.remove(m);
 		terminateBroadcastList.remove(m);
+		registers.remove(m.getName());
 	}
 
 	@Override
 	public Message awaitMessage(Subscriber m) throws InterruptedException {
 		synchronized (registers) {
-			while (registers.get(m).isEmpty()) {
+			while (registers.get(m.getName()).isEmpty()) {
+				System.out.println(m.getName()+"waiting");
 				if(Thread.currentThread().isInterrupted())
 					throw new InterruptedException();
-				sleep(100);
+				sleep(1000);
 			}
-			return registers.get(m).element();
+			return registers.get(m.getName()).poll();
 		}
 	}
 
-	
 
 }

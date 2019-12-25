@@ -6,6 +6,7 @@ import bgu.spl.mics.application.passiveObjects.Diary;
 import bgu.spl.mics.application.passiveObjects.Report;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -19,7 +20,7 @@ public class M extends Subscriber {
 	private int id;
 
 	public M(int id) {
-		super("M");
+		super("M"+id);
 		this.id=id;
 		currTick=0;
 	}
@@ -30,6 +31,7 @@ public class M extends Subscriber {
 			@Override
 			public void call(TickBroadcast c) {
 				currTick = c.getCurrTick();
+				System.out.println(getName()+" "+currTick);
 			}
 		};
 		Callback<MissionReceivedEvent> callbackMissionReceived = new Callback<MissionReceivedEvent>() {
@@ -39,22 +41,24 @@ public class M extends Subscriber {
 				SimplePublisher SP = getSimplePublisher();
 				boolean complete = false;
 				Future<Integer> hasAgents = SP.sendEvent(new AgentsAvailableEvent(e.getAgents()));
-				if (hasAgents.get() != -1) {//-1 means failed event
+				if (hasAgents!=null && hasAgents.get() != -1) {//-1 means failed event
 					Future<Integer> hasGadget = SP.sendEvent(new GadgetAvailableEvent(e.getGadget()));
 					if (hasGadget.get() != -1 && currTick < e.getTimeExpired()) {
 						Future<List<String>> sendAgents = SP.sendEvent(new SendAgentsEvent(e.getAgents(),e.getDuration()));
 						complete(e, true);
 						complete = true;
+						System.out.println("completed mission");
 						Diary.getInstance().addReport(new Report(e.getMissonName(), id, hasAgents.get(), e.getAgents(),
-									sendAgents.get(), e.getGadget(), e.getTimeIssued(), hasGadget.get(), Math.max(currTick, hasGadget.get())));
-							//TODO: addReportEvent.
+									sendAgents.get(), e.getGadget(), e.getTimeIssued(), hasGadget.get(), currTick));
 					} else {
 						complete(e, false);
+						System.out.println("failed mission no gadget");
 					}
 				}
 				if (!complete) {
 					Future<Boolean> releaseAgents = SP.sendEvent(new ReleaseAgentsEvent(e.getAgents()));
-					releaseAgents.get();
+					releaseAgents.get((e.getTimeExpired()-e.getDuration())*100, TimeUnit.NANOSECONDS);
+					System.out.println("failed mission no agents");
 				}
 			}
 		};
