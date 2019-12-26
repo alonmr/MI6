@@ -129,7 +129,7 @@ public abstract class Subscriber extends RunnableSubPub {
         while(!terminated){
             try {
                 Message msg = MSB.awaitMessage(this);
-               // System.out.println(getName()+" got msg");
+                System.out.println(getName()+" terminated " + terminated);
                 Callback callback = callbackHashMap.get(msg.getClass());
                 callback.call(msg);
             }catch (InterruptedException e){

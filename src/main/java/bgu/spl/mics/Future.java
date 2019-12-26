@@ -65,12 +65,18 @@ public class Future<T> {
      *         elapsed, return null.
      */
 	public T get(long timeout, TimeUnit unit) {
-		synchronized (this) {
 			if (isDone())
 				return result;
 			else {
 				try {
-					unit.sleep(timeout);
+					long tosleep = TimeUnit.NANOSECONDS.convert(timeout,unit)/1000;
+					int max = 0;
+					while(max<1000) {
+						TimeUnit.NANOSECONDS.sleep(tosleep);
+						max = max+1;
+						if (isDone())
+							return result;
+					}
 				} catch (Exception ignored) {
 				}
 			}
@@ -78,6 +84,5 @@ public class Future<T> {
 				return result;
 			return null;
 		}
-	}
 
 }

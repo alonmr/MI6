@@ -20,10 +20,12 @@ public class Intelligence extends Subscriber {
 	private LinkedList<MissionInfo> missions;
 	private Callback<TickBroadcast> callbackTick;
 	private int id;
+	private int terminateTime;
 
-	public Intelligence(LinkedList<MissionInfo> missions,int id) {
+	public Intelligence(LinkedList<MissionInfo> missions,int id,int terminateTime) {
 		super("Intelligence "+id);
 		this.missions=missions;
+		this.terminateTime=terminateTime;
 	}
 
 	@Override
@@ -36,7 +38,7 @@ public class Intelligence extends Subscriber {
 					int timeIssued = missions.element().getTimeIssued();
 					if (timeIssued <= b.getCurrTick()) {
 						MissionInfo missionInfo = missions.remove();
-						SP.sendEvent(new MissionReceivedEvent(missionInfo));
+						SP.sendEvent(new MissionReceivedEvent(missionInfo,terminateTime));
 					}
 				}
 			}

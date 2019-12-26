@@ -1,5 +1,8 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -59,30 +62,30 @@ public class Diary {
 	 * This method is called by the main method in order to generate the output.
 	 */
 	public void printToFile(String filename){
-		try (FileWriter file = new FileWriter(filename)) {
-			file.write("{"+"\n");
-			file.write("\"reports\": ["+"\n");
-			file.write(reports.size());
-			for(int i=0;i<reports.size();i++) {
 
+		JSONArray reportsArray = new JSONArray();
 
+		for(int i=0;i<reports.size();i++) {
 				for (Report report : reports) {
-					file.write("{"+"\n");
-					file.flush();
-					file.write("\"missionName\": "+"\""+report.getMissionName()+"\",");
-					file.write("\"m\": "+"\""+report.getM()+"\",");
-					file.write("\"moneypenny\": "+"\""+report.getMoneypenny()+"\",");
-					file.write("\"agentsSerialNumbers\": "+"[");
-					file.write("\"agentsNames\": "+"[");
-					file.write("\"gadgetName\": "+"\""+report.getGadgetName()+"\",");
-					file.write("\"timeCreated\": "+"\""+report.getTimeCreated()+"\",");
-					file.write("\"timeIssued\": "+"\""+report.getTimeIssued()+"\",");
-					file.write("\"qTime\": "+"\""+report.getQTime()+"\",");
-					file.write("},"+"\n");
-					file.flush();
+					JSONObject jsonObject = new JSONObject();
+					jsonObject.put("missionName",report.getMissionName()+",");
+					jsonObject.put("m",+report.getM()+",");
+					jsonObject.put("moneypenny",report.getMoneypenny()+",");
+					jsonObject.put("agentsSerialNumbers","[");
+					jsonObject.put("agentsNames","[");
+					jsonObject.put("gadgetName",report.getGadgetName());
+					jsonObject.put("timeCreated",report.getTimeCreated());
+					jsonObject.put("timeIssued",report.getTimeIssued());
+					jsonObject.put("qTime",report.getQTime());
+					reportsArray.add(jsonObject);
 				}
-				file.write("}" + "\n");
 			}
+		JSONObject jsonHeadline = new JSONObject();
+		jsonHeadline.put("reports",reportsArray);
+		try (FileWriter file = new FileWriter(filename)) {
+			file.write(jsonHeadline.toJSONString());
+			file.flush();
+			file.close();
 		} catch (IOException e) {
 
 		}

@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /** This is the Main class of the application. You should parse the input file,
  * create the different instances of the objects, and run the system.
@@ -73,9 +74,12 @@ public class MI6Runner {
             Q.start();
             TS.join();//time service is done
             //terminate all
+            Q.join();
+            //join all
             System.out.println("terminated");
-            Inventory.getInstance().printToFile("inventoryOutputFile");
-            Diary.getInstance().printToFile("diaryOutputFile");
+            Inventory.getInstance().printToFile("inventoryOutputFile.json");
+            Diary.getInstance().printToFile("diaryOutputFile.json");
+            m.shutdown();
         } catch (ParseException | IOException | InterruptedException ex) {
             System.out.println("exception caught");
         }
@@ -95,7 +99,7 @@ public class MI6Runner {
             JSONObject missionArray = (JSONObject) intelligenceArray.get(i);
             JSONArray insideMission = (JSONArray) missionArray.get("missions");
             insideMission.forEach(data -> parseMissionArray((JSONObject) data,missionInfoList));
-            Intelligence intelligence= new Intelligence(missionInfoList,i+1);
+            Intelligence intelligence= new Intelligence(missionInfoList,i+1,Integer.parseInt(servicesObject.get("time").toString()));
             intelligenceList.add(intelligence);
         }
     }

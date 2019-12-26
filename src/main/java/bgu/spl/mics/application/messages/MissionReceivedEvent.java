@@ -9,15 +9,14 @@ import java.util.List;
 public class MissionReceivedEvent implements Event<Boolean> {
 
     private MissionInfo missionInfo;
+    private int terminateTime;
 
-
-    public MissionReceivedEvent(MissionInfo missionInfo) {
+    public MissionReceivedEvent(MissionInfo missionInfo,int terminateTime) {
         this.missionInfo = missionInfo;
+        this.terminateTime = terminateTime;
     }
 
-    public MissionReceivedEvent() {
-
-    }
+    public int getTerminateTime(){return terminateTime;}
 
     public String getGadget(){return missionInfo.getGadget();}
 

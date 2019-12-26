@@ -43,7 +43,7 @@ public class M extends Subscriber {
 				boolean complete = false;
 				AgentsAvailableEvent agentsAvailableEvent =new AgentsAvailableEvent(e.getAgents(),e.getDuration());
 				Future<Pair<Integer,List<String>>> hasAgents = SP.sendEvent(agentsAvailableEvent);
-				if (hasAgents.get() != null) {
+				if (hasAgents.get((Math.min(e.getTerminateTime(),e.getTimeExpired())-e.getTimeIssued())*100,TimeUnit.MILLISECONDS) != null) {
 					Future<Integer> hasGadget = SP.sendEvent(new GadgetAvailableEvent(e.getGadget()));
 						if (hasGadget.get() != -1 && currTick < e.getTimeExpired()) {
 							List<String> agentsNames = hasAgents.get().getValue();
@@ -67,7 +67,12 @@ public class M extends Subscriber {
 				if (!complete) {
 					//Future<Boolean> releaseAgents = SP.sendEvent(new ReleaseAgentsEvent(e.getAgents()));
 					//releaseAgents.get();
+					agentsAvailableEvent.setSend(-1);
 					System.out.println("failed mission no agents "+getName());
+					System.out.println(e.getTerminateTime()+"<"+e.getTimeExpired());
+					if(e.getTerminateTime()<e.getTimeExpired()){
+						terminate();
+					}
 				}
 			}
 		};
