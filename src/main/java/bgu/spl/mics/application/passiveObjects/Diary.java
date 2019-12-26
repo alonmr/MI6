@@ -1,5 +1,7 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -57,7 +59,33 @@ public class Diary {
 	 * This method is called by the main method in order to generate the output.
 	 */
 	public void printToFile(String filename){
-		//TODO: Implement this
+		try (FileWriter file = new FileWriter(filename)) {
+			file.write("{"+"\n");
+			file.write("\"reports\": ["+"\n");
+			file.write(reports.size());
+			for(int i=0;i<reports.size();i++) {
+
+
+				for (Report report : reports) {
+					file.write("{"+"\n");
+					file.flush();
+					file.write("\"missionName\": "+"\""+report.getMissionName()+"\",");
+					file.write("\"m\": "+"\""+report.getM()+"\",");
+					file.write("\"moneypenny\": "+"\""+report.getMoneypenny()+"\",");
+					file.write("\"agentsSerialNumbers\": "+"[");
+					file.write("\"agentsNames\": "+"[");
+					file.write("\"gadgetName\": "+"\""+report.getGadgetName()+"\",");
+					file.write("\"timeCreated\": "+"\""+report.getTimeCreated()+"\",");
+					file.write("\"timeIssued\": "+"\""+report.getTimeIssued()+"\",");
+					file.write("\"qTime\": "+"\""+report.getQTime()+"\",");
+					file.write("},"+"\n");
+					file.flush();
+				}
+				file.write("}" + "\n");
+			}
+		} catch (IOException e) {
+
+		}
 	}
 
 	/**
