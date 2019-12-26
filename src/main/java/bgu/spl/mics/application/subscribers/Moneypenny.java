@@ -9,6 +9,7 @@ import bgu.spl.mics.application.messages.ReleaseAgentsEvent;
 import bgu.spl.mics.application.messages.SendAgentsEvent;
 import bgu.spl.mics.application.messages.TickBroadcast;
 import bgu.spl.mics.application.passiveObjects.Squad;
+import javafx.util.Pair;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -44,7 +45,19 @@ public class Moneypenny extends Subscriber {
 			@Override
 			public void call(AgentsAvailableEvent e) {
 				ourSquad.getAgents(e.getSerialNumbers());
-				complete(e,id);
+				Pair<Integer,List<String>> result = new Pair<>(id,ourSquad.getAgentsNames(e.getSerialNumbers()));
+				complete(e,result);
+				System.out.println(getName()+" waiting for gadget");
+				int send = e.getSend();
+				if(send == 1) {
+					ourSquad.sendAgents(e.getSerialNumbers(), e.getTime());
+					System.out.println("sent agents");
+				}
+				else if(send == -1) {
+					ourSquad.releaseAgents(e.getSerialNumbers());
+					System.out.println("released agents");
+				}
+				System.out.println("int sent was "+send);
 			}
 		};
 
@@ -64,7 +77,7 @@ public class Moneypenny extends Subscriber {
 				complete(e,true);
 			}
 		};
-		if(id != 1)
+		//if(id != 1)
 			this.subscribeEvent(AgentsAvailableEvent.class, callbackAgentsAvailable);
 		this.subscribeEvent(SendAgentsEvent.class, callbackSendAgents);
 		this.subscribeEvent(ReleaseAgentsEvent.class, callbackReleaseAgents);

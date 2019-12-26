@@ -37,9 +37,12 @@ public class Q extends Subscriber {
 			public void call(GadgetAvailableEvent e) {
 				if (!ourInventory.getItem(e.getGadget())){
 					complete(e,-1);
+					System.out.println("no gadget "+e.getGadget());
 				}
-				else
-					complete(e,currTick);
+				else {
+					complete(e, currTick);
+					System.out.println("took gadget "+e.getGadget());
+				}
 
 			}
 		};

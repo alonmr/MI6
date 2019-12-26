@@ -4,6 +4,7 @@ import bgu.spl.mics.*;
 import bgu.spl.mics.application.messages.*;
 import bgu.spl.mics.application.passiveObjects.Diary;
 import bgu.spl.mics.application.passiveObjects.Report;
+import javafx.util.Pair;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -40,24 +41,32 @@ public class M extends Subscriber {
 				Diary.getInstance().incrementTotal();
 				SimplePublisher SP = getSimplePublisher();
 				boolean complete = false;
-				Future<Integer> hasAgents = SP.sendEvent(new AgentsAvailableEvent(e.getAgents()));
-				if (hasAgents.get((e.getTimeExpired()-e.getTimeIssued())*100,TimeUnit.NANOSECONDS) != null) {
+				AgentsAvailableEvent agentsAvailableEvent =new AgentsAvailableEvent(e.getAgents(),e.getDuration());
+				Future<Pair<Integer,List<String>>> hasAgents = SP.sendEvent(agentsAvailableEvent);
+				if (hasAgents.get() != null) {
 					Future<Integer> hasGadget = SP.sendEvent(new GadgetAvailableEvent(e.getGadget()));
-					if (hasGadget.get() != -1 && currTick < e.getTimeExpired()) {
-						Future<List<String>> sendAgents = SP.sendEvent(new SendAgentsEvent(e.getAgents(),e.getDuration()));
-						complete(e, true);
-						complete = true;
-						System.out.println("completed mission");
-						Diary.getInstance().addReport(new Report(e.getMissonName(), id, hasAgents.get(), e.getAgents(),
-									sendAgents.get(), e.getGadget(), e.getTimeIssued(), hasGadget.get(), currTick));
-					} else {
-						complete(e, false);
-						System.out.println("failed mission no gadget");
-					}
+						if (hasGadget.get() != -1 && currTick < e.getTimeExpired()) {
+							List<String> agentsNames = hasAgents.get().getValue();
+							int mpid = hasAgents.get().getKey();//access to moneypennyid
+							agentsAvailableEvent.setSend(1);
+							System.out.println("moneypenny "+mpid+"should send agents");
+							//Future<List<String>> sendAgents = SP.sendEvent(new SendAgentsEvent(e.getAgents(),e.getDuration()));
+							complete(e, true);
+							complete = true;
+							System.out.println("completed mission "+getName());
+							Diary.getInstance().addReport(new Report(e.getMissonName(), id, mpid, e.getAgents(),
+									agentsNames, e.getGadget(), e.getTimeIssued(), hasGadget.get(), currTick));
+						} else {
+							complete(e, false);
+							agentsAvailableEvent.setSend(-1);
+							System.out.println("moneypenny "+hasAgents.get().getKey()+"should release agents");
+							System.out.println("failed mission no gadget or " + currTick + ">" + e.getTimeExpired());
+						}
+
 				}
 				if (!complete) {
-					Future<Boolean> releaseAgents = SP.sendEvent(new ReleaseAgentsEvent(e.getAgents()));
-					releaseAgents.get();
+					//Future<Boolean> releaseAgents = SP.sendEvent(new ReleaseAgentsEvent(e.getAgents()));
+					//releaseAgents.get();
 					System.out.println("failed mission no agents");
 				}
 			}

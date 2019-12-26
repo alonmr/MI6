@@ -33,8 +33,11 @@ public class Intelligence extends Subscriber {
 			@Override
 			public void call(TickBroadcast b) {
 				if(!missions.isEmpty()) {
-					MissionInfo missionInfo = missions.remove();
-					SP.sendEvent(new MissionReceivedEvent(missionInfo));
+					int timeIssued = missions.element().getTimeIssued();
+					if (timeIssued <= b.getCurrTick()) {
+						MissionInfo missionInfo = missions.remove();
+						SP.sendEvent(new MissionReceivedEvent(missionInfo));
+					}
 				}
 			}
 		};
