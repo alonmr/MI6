@@ -56,6 +56,8 @@ public class Inventory {
 		return false;
 	}
 
+	public List<String> getGadgets(){return gadgets;}
+
 	/**
 	 *
 	 * <p>

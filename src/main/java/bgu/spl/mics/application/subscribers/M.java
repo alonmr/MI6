@@ -53,7 +53,7 @@ public class M extends Subscriber {
 							//Future<List<String>> sendAgents = SP.sendEvent(new SendAgentsEvent(e.getAgents(),e.getDuration()));
 							complete(e, true);
 							complete = true;
-							System.out.println("completed mission "+getName());
+							System.out.println("completed mission "+getName()+" "+e.getMissonName());
 							Diary.getInstance().addReport(new Report(e.getMissonName(), id, mpid, e.getAgents(),
 									agentsNames, e.getGadget(), e.getTimeIssued(), hasGadget.get(), currTick));
 						} else {
@@ -67,7 +67,7 @@ public class M extends Subscriber {
 				if (!complete) {
 					//Future<Boolean> releaseAgents = SP.sendEvent(new ReleaseAgentsEvent(e.getAgents()));
 					//releaseAgents.get();
-					System.out.println("failed mission no agents");
+					System.out.println("failed mission no agents "+getName());
 				}
 			}
 		};

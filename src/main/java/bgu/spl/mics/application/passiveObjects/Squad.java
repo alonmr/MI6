@@ -70,9 +70,11 @@ public class Squad {
 			ListIterator<String> serialIterator = serials.listIterator();
 			while (serialIterator.hasNext()) {
 				String serialNum = serialIterator.next();
-				if (agentsMap.containsKey(serialNum)) {
-				} else
+				if (!agentsMap.containsKey(serialNum)) {
+					System.out.println(serialNum+" is not in squad");
 					return false;
+
+				}
 			}
 			acquireAgents(serials);
 		}

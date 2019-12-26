@@ -44,20 +44,21 @@ public class Moneypenny extends Subscriber {
 		Callback<AgentsAvailableEvent> callbackAgentsAvailable = new Callback<AgentsAvailableEvent>() {
 			@Override
 			public void call(AgentsAvailableEvent e) {
-				ourSquad.getAgents(e.getSerialNumbers());
-				Pair<Integer,List<String>> result = new Pair<>(id,ourSquad.getAgentsNames(e.getSerialNumbers()));
-				complete(e,result);
-				System.out.println(getName()+" waiting for gadget");
-				int send = e.getSend();
-				if(send == 1) {
-					ourSquad.sendAgents(e.getSerialNumbers(), e.getTime());
-					System.out.println("sent agents");
+				boolean acquired = ourSquad.getAgents(e.getSerialNumbers());
+				if (acquired) {
+					Pair<Integer, List<String>> result = new Pair<>(id, ourSquad.getAgentsNames(e.getSerialNumbers()));
+					complete(e, result);
+					System.out.println(getName() + " waiting for gadget");
+					int send = e.getSend();
+					if (send == 1) {
+						ourSquad.sendAgents(e.getSerialNumbers(), e.getTime());
+						System.out.println("sent agents");
+					} else if (send == -1) {
+						ourSquad.releaseAgents(e.getSerialNumbers());
+						System.out.println("released agents");
+					}
+					System.out.println("int sent was " + send);
 				}
-				else if(send == -1) {
-					ourSquad.releaseAgents(e.getSerialNumbers());
-					System.out.println("released agents");
-				}
-				System.out.println("int sent was "+send);
 			}
 		};
 
