@@ -1,5 +1,5 @@
 {
-    "inventory": [
+    "inventory": [ 
         "Sky Hook",
         "X-ray glasses",
         "Dagger shoe"

@@ -102,7 +102,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public Message awaitMessage(Subscriber m) throws InterruptedException {
 		while (registers.get(m.getName()).isEmpty()) {
-			System.out.println(m.getName()+"waiting");
+			//System.out.println(m.getName()+"waiting");
 			if(Thread.currentThread().isInterrupted())
 				throw new InterruptedException();
 			sleep(100);
