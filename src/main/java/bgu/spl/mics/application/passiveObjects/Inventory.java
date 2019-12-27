@@ -1,5 +1,7 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import org.json.simple.JSONArray;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -67,10 +69,12 @@ public class Inventory {
 	 */
 	public void printToFile(String filename){
 		try (FileWriter file = new FileWriter(filename)) {
+			JSONArray jsonArray = new JSONArray();
 			for (String gadget:gadgets) {
-				file.write(gadget+"\n");
-				file.flush();
+				jsonArray.add(gadget);
 			}
+			file.write(jsonArray.toJSONString());
+			file.flush();
 		} catch (IOException e) {
 
 		}

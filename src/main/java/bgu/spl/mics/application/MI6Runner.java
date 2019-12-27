@@ -32,10 +32,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class MI6Runner {
     public static void main(String[] args) {
-        MessageBrokerImpl.getInstance();
         Inventory inventoryInstance = Inventory.getInstance();
         Squad squadInstance = Squad.getInstance();
-
 
         JSONParser jsonParser = new JSONParser();
         try {
@@ -45,8 +43,6 @@ public class MI6Runner {
             List<Intelligence> intelligenceList=new LinkedList<Intelligence>();
             addToIntelligenceList(obj,intelligenceList);
             JSONObject servicesObject=getServicesObject(obj);
-
-
 
             TimeService timeService=new TimeService(Integer.parseInt(servicesObject.get("time").toString()));
             Thread TS = new Thread(timeService);
@@ -75,6 +71,7 @@ public class MI6Runner {
             TS.join();//time service is done
             //terminate all
             Q.join();
+            while(!m.isTerminated() | !moneyPenny.isTerminated() | !intelligence.isTerminated()){}
             //join all
             System.out.println("terminated");
             Inventory.getInstance().printToFile("inventoryOutputFile.json");

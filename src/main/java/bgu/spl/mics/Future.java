@@ -65,8 +65,13 @@ public class Future<T> {
      *         elapsed, return null.
      */
 	public T get(long timeout, TimeUnit unit) {
-			if (isDone())
-				return result;
+		if (isDone())
+			return result;
+			if(unit == TimeUnit.NANOSECONDS){
+				try{
+					unit.sleep(timeout);
+				}catch (Exception ignored){}
+			}
 			else {
 				try {
 					long tosleep = TimeUnit.NANOSECONDS.convert(timeout,unit)/1000;

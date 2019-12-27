@@ -15,26 +15,27 @@ import static java.lang.Thread.sleep;
  */
 public class MessageBrokerImpl implements MessageBroker {
 
-	private static MessageBrokerImpl ourInstance;
-	private static ConcurrentHashMap<String, Queue<Message>> registers;//maybe should be blocking queue
-	//private static ConcurrentHashMap<String, Stack<Broadcast>>
+	private static ConcurrentHashMap<String, Queue<Message>> registers;
 	private static ConcurrentHashMap<Class<? extends Broadcast>,LinkedBlockingQueue<Subscriber>> broadcastSubscribers;
 	private static ConcurrentHashMap<Class<? extends Event>,LinkedBlockingQueue<Subscriber>> messagesSubscribers;
 	private static ConcurrentHashMap<Event,Future> events;
 
+	private static class SingletonHolder {
+		private static MessageBrokerImpl instance = new MessageBrokerImpl();
+	}
+
+	private MessageBrokerImpl(){
+		registers = new ConcurrentHashMap<>();
+		messagesSubscribers = new ConcurrentHashMap<>();
+		broadcastSubscribers= new ConcurrentHashMap<>();
+		events = new ConcurrentHashMap<>();
+	}
 	/**
 	 * Retrieves the single instance of this class.
 	 */
 	public static MessageBroker getInstance() {
-		if (ourInstance == null) {
-			ourInstance = new MessageBrokerImpl();
-			registers = new ConcurrentHashMap<>();
-			messagesSubscribers = new ConcurrentHashMap<>();
-			broadcastSubscribers= new ConcurrentHashMap<>();
-			events = new ConcurrentHashMap<>();
-		}
-		return ourInstance;
-	} //TODO: make msgBroker Safe Singelton
+		return SingletonHolder.instance;//safe singleton will not be loaded until this reference and only 1 thread loads classes
+	}
 
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {
