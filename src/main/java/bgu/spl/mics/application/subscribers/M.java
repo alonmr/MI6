@@ -43,9 +43,9 @@ public class M extends Subscriber {
 				boolean complete = false;
 				AgentsAvailableEvent agentsAvailableEvent =new AgentsAvailableEvent(e.getAgents(),e.getDuration());
 				Future<Pair<Integer,List<String>>> hasAgents = SP.sendEvent(agentsAvailableEvent);
-				if (hasAgents.get((Math.min(e.getTerminateTime(),e.getTimeExpired())-e.getTimeIssued())*100,TimeUnit.MILLISECONDS) != null) {
+				if (hasAgents != null && hasAgents.get((Math.min(e.getTerminateTime(),e.getTimeExpired())-e.getTimeIssued())*100,TimeUnit.MILLISECONDS).getKey()!=-1) {
 					Future<Integer> hasGadget = SP.sendEvent(new GadgetAvailableEvent(e.getGadget()));
-						if (hasGadget.get() != -1 && currTick < e.getTimeExpired()) {
+						if (hasGadget != null && hasGadget.get() != -1 && currTick < e.getTimeExpired()) {
 							List<String> agentsNames = hasAgents.get().getValue();
 							int mpid = hasAgents.get().getKey();//access to moneypennyid
 							agentsAvailableEvent.setSend(1);
@@ -68,13 +68,10 @@ public class M extends Subscriber {
 					//Future<Boolean> releaseAgents = SP.sendEvent(new ReleaseAgentsEvent(e.getAgents()));
 					//releaseAgents.get();
 					agentsAvailableEvent.setSend(-1);
-					System.out.println("failed mission no agents "+getName());
-					System.out.println(e.getTerminateTime()+"<"+e.getTimeExpired());
-					if(e.getTerminateTime()<e.getTimeExpired()){
-						terminate();
+					System.out.println("failed mission "+e.getMissonName()+" no agents "+getName());
 					}
 				}
-			}
+
 		};
 
 		this.subscribeEvent(MissionReceivedEvent.class, callbackMissionReceived);

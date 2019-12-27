@@ -109,7 +109,7 @@ public abstract class Subscriber extends RunnableSubPub {
     }
 
     /**
-     * The entry point of the Subscriber. TODO: you must complete this code
+     * The entry point of the Subscriber.
      * otherwise you will end up in an infinite loop.
      */
     @Override
@@ -129,7 +129,6 @@ public abstract class Subscriber extends RunnableSubPub {
         while(!terminated){
             try {
                 Message msg = MSB.awaitMessage(this);
-                System.out.println(getName()+" terminated " + terminated);
                 Callback callback = callbackHashMap.get(msg.getClass());
                 callback.call(msg);
             }catch (InterruptedException e){

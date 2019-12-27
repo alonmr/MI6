@@ -58,7 +58,8 @@ public class Moneypenny extends Subscriber {
 						System.out.println("released agents");
 					}
 					System.out.println("int sent was " + send);
-				}
+				}else
+					complete(e,new Pair<>(-1,null));
 			}
 		};
 

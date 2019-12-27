@@ -65,27 +65,26 @@ public class Diary {
 
 		JSONArray reportsArray = new JSONArray();
 
-		for(int i=0;i<reports.size();i++) {
-				for (Report report : reports) {
-					JSONObject jsonObject = new JSONObject();
-					jsonObject.put("missionName",report.getMissionName()+",");
-					jsonObject.put("m",+report.getM()+",");
-					jsonObject.put("moneypenny",report.getMoneypenny()+",");
-					jsonObject.put("agentsSerialNumbers","[");
-					jsonObject.put("agentsNames","[");
-					jsonObject.put("gadgetName",report.getGadgetName());
-					jsonObject.put("timeCreated",report.getTimeCreated());
-					jsonObject.put("timeIssued",report.getTimeIssued());
-					jsonObject.put("qTime",report.getQTime());
-					reportsArray.add(jsonObject);
-				}
-			}
+		for (Report report : reports) {
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("missionName",report.getMissionName());
+			jsonObject.put("m",+report.getM());
+			jsonObject.put("moneypenny",report.getMoneypenny());
+			jsonObject.put("agentsSerialNumbers","[");
+			jsonObject.put("agentsNames","[");
+			jsonObject.put("gadgetName",report.getGadgetName());
+			jsonObject.put("timeCreated",report.getTimeCreated());
+			jsonObject.put("timeIssued",report.getTimeIssued());
+			jsonObject.put("qTime",report.getQTime());
+			reportsArray.add(jsonObject);
+		}
+
+		System.out.println(reportsArray.toJSONString());
 		JSONObject jsonHeadline = new JSONObject();
 		jsonHeadline.put("reports",reportsArray);
 		try (FileWriter file = new FileWriter(filename)) {
 			file.write(jsonHeadline.toJSONString());
 			file.flush();
-			file.close();
 		} catch (IOException e) {
 
 		}
