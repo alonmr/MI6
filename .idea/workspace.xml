@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="bb64fb31-39be-4cac-a908-8ce3c1a09f4c" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+=======
+    <list default="true" id="bb64fb31-39be-4cac-a908-8ce3c1a09f4c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input201.json" beforeDir="false" afterPath="$PROJECT_DIR$/input201.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventoryOutputFile" beforeDir="false" afterPath="$PROJECT_DIR$/inventoryOutputFile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/bgu/spl/mics/application/passiveObjects/Inventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/bgu/spl/mics/application/passiveObjects/Inventory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/bgu/spl/mics/application/passiveObjects/Squad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/bgu/spl/mics/application/passiveObjects/Squad.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/bgu/spl/mics/application/subscribers/M.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/bgu/spl/mics/application/subscribers/M.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/bgu/spl/mics/application/subscribers/Moneypenny.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/bgu/spl/mics/application/subscribers/Moneypenny.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/bgu/spl/mics/application/passiveObjects/Inventory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bgu/spl/mics/application/passiveObjects/Inventory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/bgu/spl/mics/application/passiveObjects/Squad.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bgu/spl/mics/application/passiveObjects/Squad.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/bgu/spl/mics/application/subscribers/Moneypenny.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bgu/spl/mics/application/subscribers/Moneypenny.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/bgu/spl/mics/application/subscribers/Q.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bgu/spl/mics/application/subscribers/Q.class" afterDir="false" />
+    </list>
+>>>>>>> ede57069143a1c57dec2427b96e69e37268eb116
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -12,6 +28,7 @@
   <component name="FavoritesManager">
     <favorites_list name="MI6" />
   </component>
+<<<<<<< HEAD
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
@@ -106,6 +123,8 @@
       </file>
     </leaf>
   </component>
+=======
+>>>>>>> ede57069143a1c57dec2427b96e69e37268eb116
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -117,21 +136,6 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/src/main/java/bgu/spl/mics/application/subscribers/Intelligence.java" />
-        <option value="$PROJECT_DIR$/src/main/java/bgu/spl/mics/MessageBrokerImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/bgu/spl/mics/application/messages/AgentsAvailableEvent.java" />
-        <option value="$PROJECT_DIR$/src/main/java/bgu/spl/mics/application/passiveObjects/Squad.java" />
-        <option value="$PROJECT_DIR$/src/main/java/bgu/spl/mics/application/subscribers/Moneypenny.java" />
-        <option value="$PROJECT_DIR$/src/main/java/bgu/spl/mics/application/subscribers/M.java" />
-        <option value="$PROJECT_DIR$/src/main/java/bgu/spl/mics/application/passiveObjects/Inventory.java" />
-        <option value="$PROJECT_DIR$/input201.json" />
-        <option value="$PROJECT_DIR$/src/main/java/bgu/spl/mics/application/subscribers/Q.java" />
-      </list>
-    </option>
-  </component>
   <component name="MavenImportPreferences">
     <option name="importingSettings">
       <MavenImportingSettings>
@@ -139,16 +143,11 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="810" />
-    <option name="y" value="330" />
-    <option name="width" value="980" />
-    <option name="height" value="1050" />
-  </component>
   <component name="ProjectId" id="1Uf8OIggfPEUMz4BPstzfzGGbRD" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
+<<<<<<< HEAD
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -273,6 +272,8 @@
       <pane id="Scope" />
     </panes>
   </component>
+=======
+>>>>>>> ede57069143a1c57dec2427b96e69e37268eb116
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -286,18 +287,6 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager">
     <configuration name="MI6Runner" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -344,6 +333,7 @@
     </task>
     <servers />
   </component>
+<<<<<<< HEAD
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
@@ -376,11 +366,17 @@
       <window_info anchor="right" id="Palette&#9;" order="7" />
     </layout>
   </component>
+=======
+>>>>>>> ede57069143a1c57dec2427b96e69e37268eb116
   <component name="WindowStateProjectService">
     <state x="393" y="89" key="#Notifications" timestamp="1575736734312">
       <screen x="0" y="0" width="1603" height="862" />
     </state>
     <state x="393" y="89" key="#Notifications/0.0.1603.862@0.0.1603.862" timestamp="1575736734312" />
+    <state x="553" y="233" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1577379656674">
+      <screen x="0" y="0" width="1603" height="862" />
+    </state>
+    <state x="553" y="233" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1603.862@0.0.1603.862" timestamp="1577379656674" />
     <state x="651" y="319" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1575736322460">
       <screen x="0" y="0" width="1603" height="862" />
     </state>
@@ -389,46 +385,62 @@
       <screen x="0" y="0" width="1603" height="862" />
     </state>
     <state x="580" y="184" key="FileChooserDialogImpl/0.0.1603.862@0.0.1603.862" timestamp="1575736788483" />
-    <state width="1559" height="276" key="GridCell.Tab.0.bottom" timestamp="1577308972366">
+    <state width="1559" height="276" key="GridCell.Tab.0.bottom" timestamp="1577394050899">
       <screen x="0" y="0" width="1603" height="862" />
     </state>
-    <state width="1559" height="276" key="GridCell.Tab.0.bottom/0.0.1603.862@0.0.1603.862" timestamp="1577308972366" />
-    <state width="1559" height="276" key="GridCell.Tab.0.center" timestamp="1577308972366">
+    <state width="1559" height="276" key="GridCell.Tab.0.bottom/0.0.1603.862@0.0.1603.862" timestamp="1577394050899" />
+    <state width="1559" height="276" key="GridCell.Tab.0.center" timestamp="1577394050898">
       <screen x="0" y="0" width="1603" height="862" />
     </state>
-    <state width="1559" height="276" key="GridCell.Tab.0.center/0.0.1603.862@0.0.1603.862" timestamp="1577308972366" />
-    <state width="1559" height="276" key="GridCell.Tab.0.left" timestamp="1577308972366">
+    <state width="1559" height="276" key="GridCell.Tab.0.center/0.0.1603.862@0.0.1603.862" timestamp="1577394050898" />
+    <state width="1559" height="276" key="GridCell.Tab.0.left" timestamp="1577394050898">
       <screen x="0" y="0" width="1603" height="862" />
     </state>
-    <state width="1559" height="276" key="GridCell.Tab.0.left/0.0.1603.862@0.0.1603.862" timestamp="1577308972366" />
-    <state width="1559" height="276" key="GridCell.Tab.0.right" timestamp="1577308972366">
+    <state width="1559" height="276" key="GridCell.Tab.0.left/0.0.1603.862@0.0.1603.862" timestamp="1577394050898" />
+    <state width="1559" height="276" key="GridCell.Tab.0.right" timestamp="1577394050899">
       <screen x="0" y="0" width="1603" height="862" />
     </state>
-    <state width="1559" height="276" key="GridCell.Tab.0.right/0.0.1603.862@0.0.1603.862" timestamp="1577308972366" />
-    <state width="1559" height="276" key="GridCell.Tab.1.bottom" timestamp="1577308972366">
+    <state width="1559" height="276" key="GridCell.Tab.0.right/0.0.1603.862@0.0.1603.862" timestamp="1577394050899" />
+    <state width="1559" height="276" key="GridCell.Tab.1.bottom" timestamp="1577394050899">
       <screen x="0" y="0" width="1603" height="862" />
     </state>
-    <state width="1559" height="276" key="GridCell.Tab.1.bottom/0.0.1603.862@0.0.1603.862" timestamp="1577308972366" />
-    <state width="1559" height="276" key="GridCell.Tab.1.center" timestamp="1577308972366">
+    <state width="1559" height="276" key="GridCell.Tab.1.bottom/0.0.1603.862@0.0.1603.862" timestamp="1577394050899" />
+    <state width="1559" height="276" key="GridCell.Tab.1.center" timestamp="1577394050899">
       <screen x="0" y="0" width="1603" height="862" />
     </state>
-    <state width="1559" height="276" key="GridCell.Tab.1.center/0.0.1603.862@0.0.1603.862" timestamp="1577308972366" />
-    <state width="1559" height="276" key="GridCell.Tab.1.left" timestamp="1577308972366">
+    <state width="1559" height="276" key="GridCell.Tab.1.center/0.0.1603.862@0.0.1603.862" timestamp="1577394050899" />
+    <state width="1559" height="276" key="GridCell.Tab.1.left" timestamp="1577394050899">
       <screen x="0" y="0" width="1603" height="862" />
     </state>
-    <state width="1559" height="276" key="GridCell.Tab.1.left/0.0.1603.862@0.0.1603.862" timestamp="1577308972366" />
-    <state width="1559" height="276" key="GridCell.Tab.1.right" timestamp="1577308972366">
+    <state width="1559" height="276" key="GridCell.Tab.1.left/0.0.1603.862@0.0.1603.862" timestamp="1577394050899" />
+    <state width="1559" height="276" key="GridCell.Tab.1.right" timestamp="1577394050899">
       <screen x="0" y="0" width="1603" height="862" />
     </state>
-    <state width="1559" height="276" key="GridCell.Tab.1.right/0.0.1603.862@0.0.1603.862" timestamp="1577308972366" />
+    <state width="1559" height="276" key="GridCell.Tab.1.right/0.0.1603.862@0.0.1603.862" timestamp="1577394050899" />
+    <state width="1559" height="276" key="GridCell.Tab.2.bottom" timestamp="1577392254815">
+      <screen x="0" y="0" width="1603" height="862" />
+    </state>
+    <state width="1559" height="276" key="GridCell.Tab.2.bottom/0.0.1603.862@0.0.1603.862" timestamp="1577392254815" />
+    <state width="1559" height="276" key="GridCell.Tab.2.center" timestamp="1577392254815">
+      <screen x="0" y="0" width="1603" height="862" />
+    </state>
+    <state width="1559" height="276" key="GridCell.Tab.2.center/0.0.1603.862@0.0.1603.862" timestamp="1577392254815" />
+    <state width="1559" height="276" key="GridCell.Tab.2.left" timestamp="1577392254815">
+      <screen x="0" y="0" width="1603" height="862" />
+    </state>
+    <state width="1559" height="276" key="GridCell.Tab.2.left/0.0.1603.862@0.0.1603.862" timestamp="1577392254815" />
+    <state width="1559" height="276" key="GridCell.Tab.2.right" timestamp="1577392254815">
+      <screen x="0" y="0" width="1603" height="862" />
+    </state>
+    <state width="1559" height="276" key="GridCell.Tab.2.right/0.0.1603.862@0.0.1603.862" timestamp="1577392254815" />
     <state x="309" y="10" key="SettingsEditor" timestamp="1575736951984">
       <screen x="0" y="0" width="1603" height="862" />
     </state>
     <state x="309" y="10" key="SettingsEditor/0.0.1603.862@0.0.1603.862" timestamp="1575736951984" />
-    <state x="499" y="254" key="com.intellij.ide.util.TipDialog" timestamp="1577298481948">
+    <state x="499" y="254" key="com.intellij.ide.util.TipDialog" timestamp="1577381908288">
       <screen x="0" y="0" width="1603" height="862" />
     </state>
-    <state x="499" y="254" key="com.intellij.ide.util.TipDialog/0.0.1603.862@0.0.1603.862" timestamp="1577298481948" />
+    <state x="499" y="254" key="com.intellij.ide.util.TipDialog/0.0.1603.862@0.0.1603.862" timestamp="1577381908288" />
     <state x="457" y="196" key="run.anything.popup" timestamp="1577293826073">
       <screen x="0" y="0" width="1603" height="862" />
     </state>
@@ -441,6 +453,7 @@
       </configuration>
     </watches-manager>
   </component>
+<<<<<<< HEAD
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/bgu/spl/mics/application/publishers/TimeService.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -561,6 +574,8 @@
       </provider>
     </entry>
   </component>
+=======
+>>>>>>> ede57069143a1c57dec2427b96e69e37268eb116
   <component name="masterDetails">
     <states>
       <state key="ArtifactsStructureConfigurable.UI">

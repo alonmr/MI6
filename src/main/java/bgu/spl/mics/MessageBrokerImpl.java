@@ -1,8 +1,11 @@
 package bgu.spl.mics;
 import java.util.Queue;
+import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
+import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
 
 /**
@@ -14,6 +17,7 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	private static MessageBrokerImpl ourInstance;
 	private static ConcurrentHashMap<String, Queue<Message>> registers;//maybe should be blocking queue
+	//private static ConcurrentHashMap<String, Stack<Broadcast>>
 	private static ConcurrentHashMap<Class<? extends Broadcast>,LinkedBlockingQueue<Subscriber>> broadcastSubscribers;
 	private static ConcurrentHashMap<Class<? extends Event>,LinkedBlockingQueue<Subscriber>> messagesSubscribers;
 	private static ConcurrentHashMap<Event,Future> events;
@@ -105,7 +109,7 @@ public class MessageBrokerImpl implements MessageBroker {
 			//System.out.println(m.getName()+"waiting");
 			if(Thread.currentThread().isInterrupted())
 				throw new InterruptedException();
-			sleep(100);
+			TimeUnit.NANOSECONDS.sleep(100);
 		}
 		return registers.get(m.getName()).poll();
 	}

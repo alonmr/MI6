@@ -1,5 +1,10 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -57,7 +62,33 @@ public class Diary {
 	 * This method is called by the main method in order to generate the output.
 	 */
 	public void printToFile(String filename){
-		//TODO: Implement this
+
+		JSONArray reportsArray = new JSONArray();
+
+		for(int i=0;i<reports.size();i++) {
+				for (Report report : reports) {
+					JSONObject jsonObject = new JSONObject();
+					jsonObject.put("missionName",report.getMissionName()+",");
+					jsonObject.put("m",+report.getM()+",");
+					jsonObject.put("moneypenny",report.getMoneypenny()+",");
+					jsonObject.put("agentsSerialNumbers","[");
+					jsonObject.put("agentsNames","[");
+					jsonObject.put("gadgetName",report.getGadgetName());
+					jsonObject.put("timeCreated",report.getTimeCreated());
+					jsonObject.put("timeIssued",report.getTimeIssued());
+					jsonObject.put("qTime",report.getQTime());
+					reportsArray.add(jsonObject);
+				}
+			}
+		JSONObject jsonHeadline = new JSONObject();
+		jsonHeadline.put("reports",reportsArray);
+		try (FileWriter file = new FileWriter(filename)) {
+			file.write(jsonHeadline.toJSONString());
+			file.flush();
+			file.close();
+		} catch (IOException e) {
+
+		}
 	}
 
 	/**
