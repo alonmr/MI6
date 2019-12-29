@@ -56,7 +56,6 @@ public class Diary {
         synchronized (reports) {
             reports.add(reportToAdd);
         }
-        incrementTotal();
     }
 
     /**

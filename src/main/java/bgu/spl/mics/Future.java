@@ -68,7 +68,7 @@ public class Future<T> {
      * elapsed, return null.
      */
     public T get(long timeout, TimeUnit unit) {
-        if (isDone())
+        /*if (isDone())
             return result;
         if (unit == TimeUnit.NANOSECONDS) {
             try {
@@ -90,7 +90,14 @@ public class Future<T> {
         }
         if (isDone())
             return result;
-        return null;
+            */
+        if (isDone())
+            return result;
+        try {
+            unit.sleep(timeout);
+        } catch (Exception ignored) {
+        }
+        return result;
     }
 
 }

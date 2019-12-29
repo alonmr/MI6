@@ -49,28 +49,35 @@ public class M extends Subscriber {
                 SimplePublisher SP = getSimplePublisher();
                 boolean complete = false;
                 AgentsAvailableEvent agentsAvailableEvent = new AgentsAvailableEvent(e.getAgents(), e.getDuration());
-                Pair<Integer, List<String>> agents =
-                        SP.sendEvent(agentsAvailableEvent).get((Math.min(e.getTerminateTime(), e.getTimeExpired()) - e.getTimeIssued()) * 100, TimeUnit.MILLISECONDS);
-                if (agents != null && agents.getKey() != -1) {
-                    Future<Integer> hasGadget = SP.sendEvent(new GadgetAvailableEvent(e.getGadget()));
-                    if (hasGadget != null && hasGadget.get() != -1 && currTick < e.getTimeExpired()) {
-                        List<String> agentsNames = agents.getValue();
-                        int mpid = agents.getKey();//access to moneypennyid
-                        agentsAvailableEvent.setSend(1);
-                        System.out.println("moneypenny " + mpid + "should send agents");
-                        //Future<List<String>> sendAgents = SP.sendEvent(new SendAgentsEvent(e.getAgents(),e.getDuration()));
-                        complete(e, true);
-                        complete = true;
-                        System.out.println("completed mission " + getName() + " " + e.getMissonName());
-                        Diary.getInstance().addReport(new Report(e.getMissonName(), id, mpid, e.getAgents(),
-                                agentsNames, e.getGadget(), e.getTimeIssued(), hasGadget.get(), currTick));
-                    } else {
-                        complete(e, false);
-                        agentsAvailableEvent.setSend(-1);
-                        System.out.println("moneypenny " + agents.getKey() + "should release agents");
-                        System.out.println("failed mission no gadget or " + currTick + ">" + e.getTimeExpired());
+                Future<Pair<Integer, List<String>>> hasAgents = SP.sendEvent(agentsAvailableEvent);
+                Pair<Integer, List<String>> agents =null;
+                if(hasAgents != null) {
+                    int slept = 1;
+                    while (slept <= (e.getTimeExpired()) - e.getTimeIssued() && slept <= (e.getTerminateTime() - e.getTimeIssued())) {
+                        agents = hasAgents.get(100, TimeUnit.MILLISECONDS);
+                        slept++;
                     }
+                    if (agents != null && agents.getKey() != -1) {
+                        Future<Integer> hasGadget = SP.sendEvent(new GadgetAvailableEvent(e.getGadget()));
+                        if (hasGadget != null && hasGadget.get() != -1 && currTick < e.getTimeExpired()) {
+                            List<String> agentsNames = agents.getValue();
+                            int mpid = agents.getKey();//access to moneypennyid
+                            agentsAvailableEvent.setSend(1);
+                            System.out.println("moneypenny " + mpid + "should send agents");
+                            //Future<List<String>> sendAgents = SP.sendEvent(new SendAgentsEvent(e.getAgents(),e.getDuration()));
+                            complete(e, true);
+                            complete = true;
+                            System.out.println("completed mission " + getName() + " " + e.getMissonName());
+                            Diary.getInstance().addReport(new Report(e.getMissonName(), id, mpid, e.getAgents(),
+                                    agentsNames, e.getGadget(), e.getTimeIssued(), hasGadget.get(), currTick));
+                        } else {
+                            complete(e, false);
+                            agentsAvailableEvent.setSend(-1);
+                            System.out.println("moneypenny " + agents.getKey() + "should release agents");
+                            System.out.println("failed mission no gadget or " + currTick + ">" + e.getTimeExpired());
+                        }
 
+                    }
                 }
                 if (!complete) {
                     //Future<Boolean> releaseAgents = SP.sendEvent(new ReleaseAgentsEvent(e.getAgents()));

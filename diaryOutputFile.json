@@ -2,7 +2,7 @@
   "reports": [
     {
       "timeIssued": 2,
-      "QTime": 2,
+      "QTime": 3,
       "gadgetName": "Pistol",
       "missionName": "Land of Riches",
       "agentNames": [
@@ -13,11 +13,11 @@
       ],
       "timeCreated": 2,
       "m": 2,
-      "moneyPenny": 1
+      "moneyPenny": 2
     },
     {
       "timeIssued": 3,
-      "QTime": 6,
+      "QTime": 8,
       "gadgetName": "Sky Hook",
       "missionName": "Thunderball",
       "agentNames": [
@@ -28,8 +28,8 @@
       ],
       "timeCreated": 3,
       "m": 1,
-      "moneyPenny": 2
+      "moneyPenny": 1
     }
   ],
-  "total": 7
+  "total": 5
 }
