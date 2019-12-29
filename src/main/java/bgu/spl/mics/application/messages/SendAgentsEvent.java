@@ -1,7 +1,7 @@
 package bgu.spl.mics.application.messages;
+
 import bgu.spl.mics.Event;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class SendAgentsEvent implements Event<List<String>> {
@@ -10,7 +10,7 @@ public class SendAgentsEvent implements Event<List<String>> {
 
     public SendAgentsEvent(List<String> agentsToSend, int duration) {
         this.agentsToSend = agentsToSend;
-        time=duration;
+        time = duration;
     }
 
     public List<String> getAgents() {

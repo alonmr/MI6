@@ -2,7 +2,6 @@ package bgu.spl.mics.application.messages;
 
 import bgu.spl.mics.Event;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class ReleaseAgentsEvent implements Event<Boolean> {
