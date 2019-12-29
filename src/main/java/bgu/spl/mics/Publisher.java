@@ -7,7 +7,7 @@ package bgu.spl.mics;
  * <p>
  * Derived classes of Publisher should never directly touch the MessageBroker.
  * method).
- *
+ * <p>
  * Only private fields and methods may be added to this class.
  * <p>
  */

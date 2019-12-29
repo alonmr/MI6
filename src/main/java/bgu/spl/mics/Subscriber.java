@@ -1,7 +1,6 @@
 package bgu.spl.mics;
 
 import bgu.spl.mics.application.messages.TerminateBroadcast;
-import bgu.spl.mics.application.messages.TickBroadcast;
 
 import java.util.HashMap;
 
@@ -16,13 +15,14 @@ import java.util.HashMap;
  * message-queue (see {@link MessageBroker#register(Subscriber)}
  * method). The abstract Subscriber stores this callback together with the
  * type of the message is related to.
- * 
+ * <p>
  * Only private fields and methods may be added to this class.
  * <p>
  */
 public abstract class Subscriber extends RunnableSubPub {
     private boolean terminated = false;
-    private HashMap<Class,Callback> callbackHashMap;
+    private HashMap<Class, Callback> callbackHashMap;
+
     /**
      * @param name the Subscriber name (used mainly for debugging purposes -
      *             does not have to be unique)
@@ -45,6 +45,7 @@ public abstract class Subscriber extends RunnableSubPub {
      * {@link Callback#call(java.lang.Object)} by calling
      * {@code callback.call(m)}.
      * <p>
+     *
      * @param <E>      The type of event to subscribe to.
      * @param <T>      The type of result expected for the subscribed event.
      * @param type     The {@link Class} representing the type of event to
@@ -54,9 +55,9 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 queue.
      */
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
-        MessageBroker MSB= MessageBrokerImpl.getInstance();
-        MSB.subscribeEvent(type,this);
-        callbackHashMap.put(type,callback);
+        MessageBroker MSB = MessageBrokerImpl.getInstance();
+        MSB.subscribeEvent(type, this);
+        callbackHashMap.put(type, callback);
     }
 
     /**
@@ -72,6 +73,7 @@ public abstract class Subscriber extends RunnableSubPub {
      * {@link Callback#call(java.lang.Object)} by calling
      * {@code callback.call(m)}.
      * <p>
+     *
      * @param <B>      The type of broadcast message to subscribe to
      * @param type     The {@link Class} representing the type of broadcast
      *                 message to subscribe to.
@@ -80,15 +82,16 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 queue.
      */
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
-        MessageBroker MSB= MessageBrokerImpl.getInstance();
-        MSB.subscribeBroadcast(type,this);
-        callbackHashMap.put(type,callback);
+        MessageBroker MSB = MessageBrokerImpl.getInstance();
+        MSB.subscribeBroadcast(type, this);
+        callbackHashMap.put(type, callback);
     }
 
     /**
      * Completes the received request {@code e} with the result {@code result}
      * using the MessageBroker.
      * <p>
+     *
      * @param <T>    The type of the expected result of the processed event
      *               {@code e}.
      * @param e      The event to complete.
@@ -96,8 +99,8 @@ public abstract class Subscriber extends RunnableSubPub {
      *               {@code e}.
      */
     protected final <T> void complete(Event<T> e, T result) {
-        MessageBroker MSB= MessageBrokerImpl.getInstance();
-        MSB.complete(e,result);
+        MessageBroker MSB = MessageBrokerImpl.getInstance();
+        MSB.complete(e, result);
     }
 
     /**
@@ -114,24 +117,24 @@ public abstract class Subscriber extends RunnableSubPub {
      */
     @Override
     public final void run() {
-        MessageBroker MSB= MessageBrokerImpl.getInstance();
+        MessageBroker MSB = MessageBrokerImpl.getInstance();
         MSB.register(this);
         Callback<TerminateBroadcast> callbackTerminate = new Callback<TerminateBroadcast>() {
             @Override
             public void call(TerminateBroadcast c) {
-                System.out.println(getName()+" terminates");
+                System.out.println(getName() + " terminates");
                 terminate();
             }
         };
-        subscribeBroadcast(TerminateBroadcast.class,callbackTerminate);
-        System.out.println("registered "+getName());
+        subscribeBroadcast(TerminateBroadcast.class, callbackTerminate);
+        System.out.println("registered " + getName());
         initialize();
-        while(!terminated){
+        while (!terminated) {
             try {
                 Message msg = MSB.awaitMessage(this);
                 Callback callback = callbackHashMap.get(msg.getClass());
                 callback.call(msg);
-            }catch (InterruptedException e){
+            } catch (InterruptedException e) {
                 terminate();
             }
         }

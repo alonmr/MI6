@@ -12,41 +12,41 @@ import static java.lang.Thread.sleep;
  * It keeps track of the amount of ticks passed since initialization and notifies
  * all other subscribers about the current time tick using {@link Tick Broadcast}.
  * This class may not hold references for objects which it is not responsible for.
- * 
+ * <p>
  * You can add private fields and public methods to this class.
  * You MAY change constructor signatures and even add new public constructors.
  */
 public class TimeService extends Publisher {
 
-	private int Tick;
-	private int duration;
+    private int Tick;
+    private int duration;
 
-	public TimeService(int duration) {
-		super("Time");
-		Tick = 0;
-		this.duration = duration;
-	}
+    public TimeService(int duration) {
+        super("Time");
+        Tick = 0;
+        this.duration = duration;
+    }
 
-	@Override
-	protected void initialize() {
-	}
+    @Override
+    protected void initialize() {
+    }
 
-	@Override
-	public void run() {
-		SimplePublisher SP = getSimplePublisher();
-		while (Tick < duration) {
-			try {
-				sleep(100);
-				Tick+=1;
-				System.out.println(this.Tick);
-			} catch (InterruptedException ignored) {
-				System.out.println("time service exception");
+    @Override
+    public void run() {
+        SimplePublisher SP = getSimplePublisher();
+        while (Tick < duration) {
+            try {
+                sleep(100);
+                Tick += 1;
+                System.out.println(this.Tick);
+            } catch (InterruptedException ignored) {
+                System.out.println("time service exception");
 
-			}
-			SP.sendBroadcast(new TickBroadcast(Tick));
-		}
-			SP.sendBroadcast(new TerminateBroadcast());
-			System.out.println("terminate sent");
-			Thread.currentThread().interrupt();
-		}
-	}
+            }
+            SP.sendBroadcast(new TickBroadcast(Tick));
+        }
+        SP.sendBroadcast(new TerminateBroadcast());
+        System.out.println("terminate sent");
+        Thread.currentThread().interrupt();
+    }
+}

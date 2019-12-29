@@ -20,7 +20,7 @@ abstract class RunnableSubPub implements Runnable {
 
     /**
      * @return the name of the Publisher/Subscriber - the Publisher/Subscriber name is given to it in the
-     *         construction time and is used mainly for debugging purposes.
+     * construction time and is used mainly for debugging purposes.
      */
     public final String getName() {
         return name;

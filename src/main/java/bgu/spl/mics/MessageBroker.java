@@ -6,7 +6,7 @@ package bgu.spl.mics;
  * It should be implemented as a thread-safe singleton.
  * The MessageBroker implementation must be thread-safe as
  * it is shared between all the Subscribers\Publishers in the system.
- * You must not alter any of the given methods of this interface. 
+ * You must not alter any of the given methods of this interface.
  * You cannot add methods to this interface.
  */
 public interface MessageBroker {
@@ -14,6 +14,7 @@ public interface MessageBroker {
     /**
      * Subscribes {@code m} to receive {@link Event}s of type {@code type}.
      * <p>
+     *
      * @param <T>  The type of the result expected by the completed event.
      * @param type The type to subscribe to,
      * @param s    The subscribing Subscriber.
@@ -23,8 +24,9 @@ public interface MessageBroker {
     /**
      * Subscribes {@code m} to receive {@link Broadcast}s of type {@code type}.
      * <p>
-     * @param type 	The type to subscribe to.
-     * @param s    	The Subscriber.
+     *
+     * @param type The type to subscribe to.
+     * @param s    The Subscriber.
      */
     void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber s);
 
@@ -34,6 +36,7 @@ public interface MessageBroker {
      * When this method is called, the MessageBroker will resolve the {@link Future}
      * object associated with {@link Event} {@code e}.
      * <p>
+     *
      * @param <T>    The type of the result expected by the completed event.
      * @param e      The completed event.
      * @param result The resolved result of the completed event.
@@ -44,7 +47,8 @@ public interface MessageBroker {
      * Adds the {@link Broadcast} {@code b} to the message queues of all the
      * Subscriber subscribed to {@code b.getClass()}.
      * <p>
-     * @param b 	The message to added to the queues.
+     *
+     * @param b The message to added to the queues.
      */
     void sendBroadcast(Broadcast b);
 
@@ -53,16 +57,18 @@ public interface MessageBroker {
      * Subscriber subscribed to {@code e.getClass()} in a round-robin
      * fashion. This method should be non-blocking.
      * <p>
-     * @param <T>    	The type of the result expected by the event and its corresponding future object.
-     * @param e     	The event to add to the queue.
+     *
+     * @param <T> The type of the result expected by the event and its corresponding future object.
+     * @param e   The event to add to the queue.
      * @return {@link Future<T>} object to be resolved once the processing is complete,
-     * 	       null in case no Subscriber has subscribed to {@code e.getClass()}.
+     * null in case no Subscriber has subscribed to {@code e.getClass()}.
      */
     <T> Future<T> sendEvent(Event<T> e);
 
     /**
      * Allocates a message-queue for the {@link Subscriber} {@code m}.
      * <p>
+     *
      * @param s the Subscriber to create a queue for.
      */
     void register(Subscriber s);
@@ -73,6 +79,7 @@ public interface MessageBroker {
      * related to {@code m} in this MessageBroker. If {@code m} was not
      * registered, nothing should happen.
      * <p>
+     *
      * @param s the Subscriber to unregister.
      */
     void unregister(Subscriber s);
@@ -86,6 +93,7 @@ public interface MessageBroker {
      * The method should throw the {@link IllegalStateException} in the case
      * where {@code m} was never registered.
      * <p>
+     *
      * @param s The Subscriber requesting to take a message from its message
      *          queue.
      * @return The next message in the {@code m}'s queue (blocking).
@@ -93,5 +101,5 @@ public interface MessageBroker {
      *                              to became available.
      */
     Message awaitMessage(Subscriber s) throws InterruptedException;
-    
+
 }
