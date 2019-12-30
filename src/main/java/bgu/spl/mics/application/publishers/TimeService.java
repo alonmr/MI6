@@ -38,15 +38,10 @@ public class TimeService extends Publisher {
             try {
                 sleep(100);
                 Tick += 1;
-                System.out.println(this.Tick);
             } catch (InterruptedException ignored) {
-                System.out.println("time service exception");
-
             }
             SP.sendBroadcast(new TickBroadcast(Tick));
         }
         SP.sendBroadcast(new TerminateBroadcast());
-        System.out.println("terminate sent");
-        Thread.currentThread().interrupt();
     }
 }

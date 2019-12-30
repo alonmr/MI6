@@ -3,12 +3,10 @@ package bgu.spl.mics.application.subscribers;
 import bgu.spl.mics.Callback;
 import bgu.spl.mics.Subscriber;
 import bgu.spl.mics.application.messages.AgentsAvailableEvent;
-import bgu.spl.mics.application.messages.ReleaseAgentsEvent;
-import bgu.spl.mics.application.messages.SendAgentsEvent;
 import bgu.spl.mics.application.messages.TickBroadcast;
 import bgu.spl.mics.application.passiveObjects.Squad;
-import javafx.util.Pair;
 
+import java.util.AbstractMap;
 import java.util.List;
 
 /**
@@ -44,43 +42,19 @@ public class Moneypenny extends Subscriber {
             public void call(AgentsAvailableEvent e) {
                 boolean acquired = ourSquad.getAgents(e.getSerialNumbers());
                 if (acquired) {
-                    Pair<Integer, List<String>> result = new Pair<>(id, ourSquad.getAgentsNames(e.getSerialNumbers()));
+                    AbstractMap.SimpleEntry<Integer, List<String>> result = new AbstractMap.SimpleEntry<>(id , ourSquad.getAgentsNames(e.getSerialNumbers()));
                     complete(e, result);
-                    System.out.println(getName() + " waiting for gadget");
                     int send = e.getSend();
                     if (send == 1) {
                         ourSquad.sendAgents(e.getSerialNumbers(), e.getTime());
-                        System.out.println("sent agents");
                     } else if (send == -1) {
                         ourSquad.releaseAgents(e.getSerialNumbers());
-                        System.out.println("released agents");
                     }
-                    System.out.println("int sent was " + send);
                 } else
-                    complete(e, new Pair<>(-1, null));
+                    complete(e, new AbstractMap.SimpleEntry<Integer, List<String>>(-1, null));
             }
         };
-
-        Callback<SendAgentsEvent> callbackSendAgents = new Callback<SendAgentsEvent>() {
-            @Override
-            public void call(SendAgentsEvent e) {
-                ourSquad.sendAgents(e.getAgents(), e.getTime());
-                List<String> agentNameList = ourSquad.getAgentsNames(e.getAgents());
-                complete(e, agentNameList);
-            }
-        };
-
-        Callback<ReleaseAgentsEvent> callbackReleaseAgents = new Callback<ReleaseAgentsEvent>() {
-            @Override
-            public void call(ReleaseAgentsEvent e) {
-                ourSquad.releaseAgents(e.getAgentsToRelease());
-                complete(e, true);
-            }
-        };
-        //if(id != 1)
         this.subscribeEvent(AgentsAvailableEvent.class, callbackAgentsAvailable);
-        this.subscribeEvent(SendAgentsEvent.class, callbackSendAgents);
-        this.subscribeEvent(ReleaseAgentsEvent.class, callbackReleaseAgents);
         this.subscribeBroadcast(TickBroadcast.class, callbackTimeTickBroadcast);
 
     }

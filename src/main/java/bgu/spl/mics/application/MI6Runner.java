@@ -32,35 +32,33 @@ public class MI6Runner {
 
         JSONParser jsonParser = new JSONParser();
         try {
-            Object obj = jsonParser.parse(new FileReader("boaz-input2.json"));
+            Object obj = jsonParser.parse(new FileReader(args[0]));
             loadToInventory(obj, inventoryInstance);
             loadToSquad(obj, squadInstance);
             List<Intelligence> intelligenceList = new LinkedList<Intelligence>();
             addToIntelligenceList(obj, intelligenceList);
             JSONObject servicesObject = getServicesObject(obj);
-
+            //initialize threads
             TimeService timeService = new TimeService(Integer.parseInt(servicesObject.get("time").toString()));
             Thread TS = new Thread(timeService);
             TS.start();
             ExecutorService intelligence = Executors.newFixedThreadPool(intelligenceList.size());
-            for (int i = 0; i < intelligenceList.size(); i++) {
-                intelligence.execute(intelligenceList.get(i));
+            for (int intelligenceSubscriber = 0; intelligenceSubscriber < intelligenceList.size(); intelligenceSubscriber++) {
+                intelligence.execute(intelligenceList.get(intelligenceSubscriber));
             }
             intelligence.shutdown();
             int amountOfM = Integer.parseInt(servicesObject.get("M").toString());
             int amountOfMoneyPenny = Integer.parseInt(servicesObject.get("Moneypenny").toString());
             ExecutorService m = Executors.newFixedThreadPool(amountOfM);
-            for (int i = 0; i < amountOfM; i++) {
-                m.execute(new M(i + 1));
+            for (int mSubscriber = 0; mSubscriber < amountOfM; mSubscriber++) {
+                m.execute(new M(mSubscriber + 1));
             }
             m.shutdown();
-            ExecutorService moneyPenny = Executors.newFixedThreadPool(amountOfMoneyPenny - 1);
-            for (int i = 1; i < amountOfMoneyPenny; i++) {
-                moneyPenny.execute(new Moneypenny(i + 1));
+            ExecutorService moneyPenny = Executors.newFixedThreadPool(amountOfMoneyPenny );
+            for (int moneypennySubscriber = 0; moneypennySubscriber < amountOfMoneyPenny; moneypennySubscriber++) {
+                moneyPenny.execute(new Moneypenny(moneypennySubscriber + 1));
             }
             moneyPenny.shutdown();
-            Thread moneyPennyForRelease = new Thread(new Moneypenny(1));
-            moneyPennyForRelease.start();
             Thread Q = new Thread(new Q());
             Q.start();
             TS.join();//time service is done
@@ -68,13 +66,10 @@ public class MI6Runner {
             Q.join();
             while (!m.isTerminated() | !moneyPenny.isTerminated() | !intelligence.isTerminated()) {
             }
-            //join all
-            System.out.println("terminated");
-            Inventory.getInstance().printToFile("inventoryOutputFile.json");
-            Diary.getInstance().printToFile("diaryOutputFile.json");
-            m.shutdown();
+            //join all then print to file
+            Inventory.getInstance().printToFile(args[1]);
+            Diary.getInstance().printToFile(args[2]);
         } catch (ParseException | IOException | InterruptedException ex) {
-            System.out.println("exception caught");
         }
     }
 

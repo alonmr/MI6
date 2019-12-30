@@ -21,12 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Diary {
     private List<Report> reports;
-    private static Diary ourInstance;
     private AtomicInteger total;
-
-    /**
-     * Retrieves the single instance of this class.
-     */
 
     private static class SingletonDiaryHolder {
         private static Diary instance = new Diary();
@@ -35,6 +30,10 @@ public class Diary {
         total = new AtomicInteger(0);
         reports = new LinkedList<Report>();
     }
+
+    /**
+     * Retrieves the single instance of this class.
+     */
     public static Diary getInstance() {
         return Diary.SingletonDiaryHolder.instance;
     }
@@ -44,7 +43,7 @@ public class Diary {
     }
 
     public List<Report> getReports() {
-        return null;
+        return reports;
     }
 
     /**
@@ -67,21 +66,7 @@ public class Diary {
     public void printToFile(String filename) {
         JSONArray jsonReports = new JSONArray();
         for (Report report : reports) {
-            JSONObject jsonObject = new JSONObject();
-            JSONArray agentsNamesArray = new JSONArray();
-            JSONArray agentsSerialNumbersArray = new JSONArray();
-            agentsNamesArray.addAll(report.getAgentsNames());
-            agentsSerialNumbersArray.addAll(report.getAgentsSerialNumbers());
-            jsonObject.put("missionName", report.getMissionName());
-            jsonObject.put("m", report.getM());
-            jsonObject.put("moneyPenny", report.getMoneypenny());
-            jsonObject.put("agentsSerialNumbers", agentsSerialNumbersArray);
-            jsonObject.put("agentNames", agentsNamesArray);
-            jsonObject.put("gadgetName", report.getGadgetName());
-            jsonObject.put("timeCreated", report.getTimeCreated());
-            jsonObject.put("timeIssued", report.getTimeIssued());
-            jsonObject.put("QTime", report.getQTime());
-            jsonReports.add(jsonObject);
+            jsonReports.add(report);
         }
         JSONObject obj = new JSONObject();
         obj.put("reports", jsonReports);

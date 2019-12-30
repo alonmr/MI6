@@ -26,6 +26,7 @@ public class Intelligence extends Subscriber {
 
     public Intelligence(LinkedList<MissionInfo> missions, int id, int terminateTime) {
         super("Intelligence " + id);
+        this.id = id;
         this.missions = missions;
         this.terminateTime = terminateTime;
     }

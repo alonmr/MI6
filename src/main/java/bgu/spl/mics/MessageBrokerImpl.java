@@ -44,14 +44,12 @@ public class MessageBrokerImpl implements MessageBroker {
         }
     }
 
-
     @Override
     public void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
         synchronized (broadcastSubscribers) {
             if (!broadcastSubscribers.containsKey(type))
                 broadcastSubscribers.put(type, new LinkedBlockingQueue<>());
             broadcastSubscribers.get(type).add(m);
-            //System.out.println(m.getName()+" subscribed to "+type);
         }
     }
 
@@ -78,7 +76,6 @@ public class MessageBrokerImpl implements MessageBroker {
         synchronized (messagesSubscribers) {
             if (!messagesSubscribers.get(e.getClass()).isEmpty()) {
                 Subscriber s = messagesSubscribers.get(e.getClass()).poll();
-                System.out.println(s.getName() + " adding " + e.toString());
                 registers.get(s.getName()).add(e);
                 messagesSubscribers.get(e.getClass()).add(s);
                 Future<T> future = new Future<>();
@@ -96,7 +93,6 @@ public class MessageBrokerImpl implements MessageBroker {
 
     @Override
     public void unregister(Subscriber m) {
-        System.out.println(m.getName() + " unregisters");
         messagesSubscribers.forEach((key, value) -> value.remove(m));
         broadcastSubscribers.forEach((key, value) -> value.remove(m));
         registers.remove(m.getName());
@@ -105,9 +101,6 @@ public class MessageBrokerImpl implements MessageBroker {
     @Override
     public Message awaitMessage(Subscriber m) throws InterruptedException {
         while (registers.get(m.getName()).isEmpty()) {
-            //System.out.println(m.getName()+"waiting");
-            if (Thread.currentThread().isInterrupted())
-                throw new InterruptedException();
             TimeUnit.NANOSECONDS.sleep(100);
         }
         return registers.get(m.getName()).poll();

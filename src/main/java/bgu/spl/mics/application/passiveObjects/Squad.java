@@ -1,7 +1,6 @@
 package bgu.spl.mics.application.passiveObjects;
 
 import java.util.*;
-import java.util.concurrent.locks.Lock;
 
 import static java.lang.Thread.sleep;
 
@@ -14,8 +13,7 @@ import static java.lang.Thread.sleep;
 public class Squad {
 
     private Map<String, Agent> agentsMap;
-    private Integer releaser = new Integer(0);
-    private boolean somebodyAquiring = false;
+    private boolean somebodyAcquiring = false;
 
     /**
      * Retrieves the single instance of this class.
@@ -78,26 +76,25 @@ public class Squad {
      */
     public boolean getAgents(List<String> serials) {
         synchronized (agentsMap) {
-            while(somebodyAquiring) {
+            while(somebodyAcquiring) {
                 try {
                     agentsMap.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            somebodyAquiring = true;
+            somebodyAcquiring = true;
             ListIterator<String> serialIterator = serials.listIterator();
             while (serialIterator.hasNext()) {
                 String serialNum = serialIterator.next();
                 if (!agentsMap.containsKey(serialNum)) {
-                    System.out.println(serialNum + " is not in squad");
-                    somebodyAquiring = false;
+                    somebodyAcquiring = false;
                     agentsMap.notifyAll();
                     return false;
                 }
             }
             acquireAgents(serials);
-            somebodyAquiring = false;
+            somebodyAcquiring = false;
             agentsMap.notifyAll();
         }
         return true;

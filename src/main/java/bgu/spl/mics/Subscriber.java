@@ -122,12 +122,10 @@ public abstract class Subscriber extends RunnableSubPub {
         Callback<TerminateBroadcast> callbackTerminate = new Callback<TerminateBroadcast>() {
             @Override
             public void call(TerminateBroadcast c) {
-                System.out.println(getName() + " terminates");
                 terminate();
             }
         };
         subscribeBroadcast(TerminateBroadcast.class, callbackTerminate);
-        System.out.println("registered " + getName());
         initialize();
         while (!terminated) {
             try {

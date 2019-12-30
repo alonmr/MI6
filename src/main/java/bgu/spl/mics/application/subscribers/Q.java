@@ -14,7 +14,6 @@ import bgu.spl.mics.application.passiveObjects.Inventory;
  */
 public class Q extends Subscriber {
 
-    Callback<GadgetAvailableEvent> callbackGadgetAvailable;
     private int currTick;
 
     public Q() {
@@ -30,15 +29,13 @@ public class Q extends Subscriber {
                 currTick = c.getCurrTick();
             }
         };
-        callbackGadgetAvailable = new Callback<GadgetAvailableEvent>() {
+        Callback<GadgetAvailableEvent> callbackGadgetAvailable = new Callback<GadgetAvailableEvent>() {
             @Override
             public void call(GadgetAvailableEvent e) {
                 if (!ourInventory.getItem(e.getGadget())) {
                     complete(e, -1);
-                    System.out.println("no gadget " + e.getGadget());
                 } else {
                     complete(e, currTick);
-                    System.out.println("took gadget " + e.getGadget());
                 }
 
             }
